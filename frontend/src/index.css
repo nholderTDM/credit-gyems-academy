@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Montserrat', 'Roboto', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary/80 text-slate-800 font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-primary text-slate-700 font-semibold px-6 py-3 rounded-full hover:bg-primary/10 transition-all;
+  }
+  
+  .glass-card {
+    @apply bg-white/90 backdrop-blur border border-slate-200/50 rounded-lg p-6 shadow-xl;
+  }
+}
