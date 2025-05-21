@@ -15,6 +15,10 @@ dotenv.config();
 const { initializeFirebaseAdmin } = require('./config/firebase');
 initializeFirebaseAdmin();
 
+// Add this after initializing Firebase Admin
+const { initializeEmailScheduler } = require('./jobs/emailScheduler');
+initializeEmailScheduler();
+
 // Initialize Express app
 const app = express();
 
