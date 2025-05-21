@@ -11,6 +11,10 @@ const routes = require('./routes');
 // Load environment variables
 dotenv.config();
 
+// Add this after loading environment variables
+const { initializeFirebaseAdmin } = require('./config/firebase');
+initializeFirebaseAdmin();
+
 // Initialize Express app
 const app = express();
 
