@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { auth } from '../config/firebase';
 
 // Component for animated counter
 const AnimatedCounter = ({ value }) => {
@@ -125,13 +126,19 @@ const products = [
   }
 ];
 
-const HomePage = () => {
+const Homepage = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   
   useEffect(() => {
+    console.log('🔥 Firebase Auth loaded:', auth);
+    console.log('🔧 Environment check:', {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY ? '✅ Found' : '❌ Missing',
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID ? '✅ Found' : '❌ Missing',
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ? '✅ Found' : '❌ Missing'
+    });
     const interval = setInterval(() => {
       setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 5000);
@@ -199,7 +206,7 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="md:w-1/2">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-slate-800 to-teal-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-slate-800 to-accent-teal bg-clip-text text-transparent">
                 Transform Your Credit Journey
               </h1>
               
@@ -208,10 +215,10 @@ const HomePage = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link to="/booking" className="bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-slate-800 font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all text-center">
+                <Link to="/booking" className="bg-gradient-to-r from-primary to-yellow-400 hover:from-yellow-400 hover:to-primary text-slate-800 font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all text-center">
                   Get Your Free Credit Assessment
                 </Link>
-                <Link to="/services" className="border-2 border-primary text-slate-700 font-semibold px-6 py-3 rounded-full hover:bg-primary-light/20 transition-all text-center">
+                <Link to="/services" className="border-2 border-primary text-slate-700 font-semibold px-6 py-3 rounded-full hover:bg-yellow-50 transition-all text-center">
                   Learn More About Our Services
                 </Link>
               </div>
@@ -269,7 +276,7 @@ const HomePage = () => {
                     </span>
                   </div>
                   
-                  <Link to="/about#success-stories" className="w-full bg-gradient-to-r from-primary to-primary-light text-slate-800 rounded-full py-3 font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center">
+                  <Link to="/about#success-stories" className="w-full bg-gradient-to-r from-primary to-yellow-400 text-slate-800 rounded-full py-3 font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center">
                     Watch Success Story
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -315,7 +322,7 @@ const HomePage = () => {
                 
                 <Link 
                   to="/about"
-                  className="text-primary font-medium flex items-center hover:text-primary-dark transition-colors"
+                  className="text-primary font-medium flex items-center hover:text-yellow-600 transition-colors"
                 >
                   Read DorTae's Full Story
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -463,7 +470,7 @@ const HomePage = () => {
                   <button
                     type="submit"
                     disabled={loading || !email}
-                    className="bg-gradient-to-r from-primary to-primary-light text-slate-800 font-semibold rounded-full px-6 py-3 min-w-[140px] disabled:opacity-70 flex justify-center"
+                    className="bg-gradient-to-r from-primary to-yellow-400 text-slate-800 font-semibold rounded-full px-6 py-3 min-w-[140px] disabled:opacity-70 flex justify-center"
                   >
                     {loading ? (
                       <div className="h-6 w-6 border-2 border-slate-800 border-t-transparent rounded-full animate-spin"></div>
@@ -606,7 +613,7 @@ const HomePage = () => {
           </div>
           
           <div className="text-center mt-12">
-            <Link to="/about#testimonials" className="bg-gradient-to-r from-primary to-primary-light text-slate-800 font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all inline-flex items-center">
+            <Link to="/about#testimonials" className="bg-gradient-to-r from-primary to-yellow-400 text-slate-800 font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all inline-flex items-center">
               View More Success Stories
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -658,7 +665,7 @@ const HomePage = () => {
                       Price: ${product.price}
                     </div>
                     
-                    <Link to={`/products/${product.id}`} className="bg-gradient-to-r from-primary to-primary-light text-slate-800 font-semibold rounded-full py-2 w-full inline-flex items-center justify-center">
+                    <Link to={`/products/${product.id}`} className="bg-gradient-to-r from-primary to-yellow-400 text-slate-800 font-semibold rounded-full py-2 w-full inline-flex items-center justify-center">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
@@ -671,7 +678,7 @@ const HomePage = () => {
           </div>
           
           <div className="text-center mt-12">
-            <Link to="/products" className="bg-gradient-to-r from-secondary to-secondary-light text-white font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all inline-flex items-center">
+            <Link to="/products" className="bg-gradient-to-r from-secondary to-red-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all inline-flex items-center">
               View All Products
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -696,7 +703,7 @@ const HomePage = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/booking" className="bg-gradient-to-r from-primary to-primary-light text-slate-800 font-semibold px-8 py-4 rounded-full text-lg shadow-lg hover:shadow-xl transition-all inline-flex items-center justify-center">
+              <Link to="/booking" className="bg-gradient-to-r from-primary to-yellow-400 text-slate-800 font-semibold px-8 py-4 rounded-full text-lg shadow-lg hover:shadow-xl transition-all inline-flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
@@ -716,4 +723,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Homepage;
