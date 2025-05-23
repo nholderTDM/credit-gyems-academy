@@ -7,6 +7,81 @@ const Product = require('../models/product');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// Generate calendar URLs for booking
+const generateCalendarUrls = (booking, user) => {
+  const startTime = new Date(booking.startTime);
+  const endTime = new Date(booking.endTime);
+  
+  // Format dates for calendar URLs (YYYYMMDDTHHMMSSZ)
+  const formatDateForCalendar = (date) => {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  };
+  
+  const startFormatted = formatDateForCalendar(startTime);
+  const endFormatted = formatDateForCalendar(endTime);
+  
+  // Map service type to readable name
+  const serviceTypes = {
+    credit_repair: 'Credit Repair Consultation',
+    credit_coaching: 'Credit Coaching Session',
+    financial_planning: 'Financial Planning Session'
+  };
+  
+  const serviceName = serviceTypes[booking.serviceType] || booking.serviceType.replace('_', ' ');
+  const eventTitle = encodeURIComponent(`${serviceName} - Credit Gyems 369`);
+  const eventDescription = encodeURIComponent(
+    `Your ${serviceName} consultation with Credit Gyems 369.\n\n` +
+    `Meeting Link: ${booking.meetingLink || 'Will be provided via email'}\n` +
+    `Booking ID: ${booking._id}\n\n` +
+    `Prepare by gathering your credit reports and financial goals. ` +
+    `We're excited to help you on your credit journey!`
+  );
+  
+  const location = encodeURIComponent(booking.meetingLink || 'Virtual Meeting');
+  
+  return {
+    google: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${startFormatted}/${endFormatted}&details=${eventDescription}&location=${location}`,
+    
+    outlook: `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventTitle}&startdt=${startFormatted}&enddt=${endFormatted}&body=${eventDescription}&location=${location}`,
+    
+    apple: generateICalData(booking, serviceName, startTime, endTime),
+    
+    yahoo: `https://calendar.yahoo.com/?v=60&view=d&type=20&title=${eventTitle}&st=${startFormatted}&et=${endFormatted}&desc=${eventDescription}&in_loc=${location}`
+  };
+};
+
+// Generate iCal data for Apple Calendar
+const generateICalData = (booking, serviceName, startTime, endTime) => {
+  const icalData = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Credit Gyems 369//Booking System//EN',
+    'BEGIN:VEVENT',
+    `UID:booking-${booking._id}@creditgyems369.com`,
+    `DTSTART:${startTime.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+    `DTEND:${endTime.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+    `SUMMARY:${serviceName} - Credit Gyems 369`,
+    `DESCRIPTION:Your consultation with Credit Gyems 369\\nBooking ID: ${booking._id}\\nMeeting: ${booking.meetingLink || 'Will be provided'}`,
+    `LOCATION:${booking.meetingLink || 'Virtual Meeting'}`,
+    'STATUS:CONFIRMED',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+  
+  return `data:text/calendar;charset=utf8,${encodeURIComponent(icalData)}`;
+};
+
+// Get service display name
+const getServiceDisplayName = (serviceType) => {
+  const serviceNames = {
+    'credit_repair': 'Credit Repair Consultation',
+    'credit_coaching': 'Credit Coaching Session',
+    'financial_planning': 'Financial Planning Session'
+  };
+  
+  return serviceNames[serviceType] || serviceType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+};
+
 // Send welcome email to new leads
 exports.sendLeadWelcome = async (leadId) => {
   try {
@@ -204,97 +279,71 @@ exports.notifyAdminOfNewLead = async (leadId) => {
   }
 };
 
-// Send booking confirmation email
+// Send booking confirmation email using SendGrid Dynamic Template
 exports.sendBookingConfirmation = async (bookingId) => {
   try {
+    // Get booking with populated user data
     const booking = await Booking.findById(bookingId)
-      .populate('userId', 'email firstName lastName');
+      .populate('userId', 'firstName lastName email');
     
     if (!booking) {
       throw new Error(`Booking not found: ${bookingId}`);
     }
     
     const user = booking.userId;
+    
+    // Generate calendar URLs
+    const calendarUrls = generateCalendarUrls(booking, user);
+    
     const startTime = new Date(booking.startTime);
-    const endTime = new Date(booking.endTime);
     
-    const formatDate = (date) => {
-      return date.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    };
+    // Format dates for email
+    const bookingDate = startTime.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
     
-    const formatTime = (date) => {
-      return date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    };
+    const bookingTime = startTime.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
     
-    // Map service type to readable name
-    const serviceTypes = {
-      credit_repair: 'Credit Repair Consultation',
-      credit_coaching: 'Credit Coaching Session',
-      financial_planning: 'Financial Planning Session'
-    };
+    // Calculate duration (default 60 minutes)
+    const duration = Math.round((new Date(booking.endTime) - startTime) / (1000 * 60));
     
-    const serviceTypeName = serviceTypes[booking.serviceType] || booking.serviceType;
+    // Determine timezone (you can make this dynamic based on user preferences)
+    const timezone = 'EST';
     
-    const msg = {
+    // Send email using SendGrid Dynamic Template
+    const emailData = {
       to: user.email,
       from: {
         email: process.env.EMAIL_FROM,
-        name: 'DorTae Freeman - Credit Gyems Academy'
+        name: 'Credit Gyems 369'
       },
-      subject: 'Your Booking Confirmation',
-      text: `
-        Hi ${user.firstName},
-        
-        Thank you for booking a ${serviceTypeName} with Credit Gyems Academy.
-        
-        Booking Details:
-        - Date: ${formatDate(startTime)}
-        - Time: ${formatTime(startTime)} - ${formatTime(endTime)}
-        - Service: ${serviceTypeName}
-        
-        ${booking.meetingLink ? `Meeting Link: ${booking.meetingLink}` : ''}
-        
-        If you need to reschedule or cancel, please visit:
-        https://creditgyemsacademy.com/account/bookings
-        
-        We look forward to speaking with you!
-        
-        Best regards,
-        DorTae Freeman
-        Credit Gyems Academy
-      `,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <img src="https://creditgyemsacademy.com/logo.png" alt="Credit Gyems Academy" style="max-width: 150px; margin-bottom: 20px;">
-          <h1 style="color: #0A2342; margin-bottom: 20px;">Your Booking Confirmation</h1>
-          <p>Hi ${user.firstName},</p>
-          <p>Thank you for booking a <strong>${serviceTypeName}</strong> with Credit Gyems Academy.</p>
-          <div style="background-color: #f8f8ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
-            <h2 style="color: #0A2342; margin-top: 0;">Booking Details</h2>
-            <p><strong>Date:</strong> ${formatDate(startTime)}</p>
-            <p><strong>Time:</strong> ${formatTime(startTime)} - ${formatTime(endTime)}</p>
-            <p><strong>Service:</strong> ${serviceTypeName}</p>
-            ${booking.meetingLink ? `<p><strong>Meeting Link:</strong> <a href="${booking.meetingLink}">${booking.meetingLink}</a></p>` : ''}
-          </div>
-          <p>If you need to reschedule or cancel, please visit your account bookings page:</p>
-          <p style="text-align: center; margin: 30px 0;">
-            <a href="https://creditgyemsacademy.com/account/bookings" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Manage Booking</a>
-          </p>
-          <p>We look forward to speaking with you!</p>
-          <p>Best regards,<br>DorTae Freeman<br>Credit Gyems Academy</p>
-        </div>
-      `
+      templateId: process.env.SENDGRID_BOOKING_TEMPLATE_ID,
+      dynamicTemplateData: {
+        first_name: user.firstName,
+        service_name: getServiceDisplayName(booking.serviceType),
+        booking_date: bookingDate,
+        booking_time: bookingTime,
+        timezone: timezone,
+        duration: duration.toString(),
+        meeting_link: booking.meetingLink || 'Will be provided 15 minutes before your appointment',
+        booking_id: booking._id.toString(),
+        manage_booking_url: `${process.env.FRONTEND_URL}/bookings/manage/${booking._id}`,
+        google_calendar_url: calendarUrls.google,
+        outlook_calendar_url: calendarUrls.outlook,
+        apple_calendar_url: calendarUrls.apple,
+        yahoo_calendar_url: calendarUrls.yahoo
+      }
     };
     
-    await sgMail.send(msg);
+    await sgMail.send(emailData);
+    
+    console.log(`Booking confirmation email sent to ${user.email} for booking ${bookingId}`);
     
     // Also send a copy to admin
     const adminMsg = {
@@ -303,17 +352,17 @@ exports.sendBookingConfirmation = async (bookingId) => {
         email: process.env.EMAIL_FROM,
         name: 'Credit Gyems Academy'
       },
-      subject: `New Booking: ${serviceTypeName}`,
+      subject: `New Booking: ${getServiceDisplayName(booking.serviceType)}`,
       text: `
         A new booking has been made:
         
         Client: ${user.firstName} ${user.lastName}
         Email: ${user.email}
-        Service: ${serviceTypeName}
-        Date: ${formatDate(startTime)}
-        Time: ${formatTime(startTime)} - ${formatTime(endTime)}
+        Service: ${getServiceDisplayName(booking.serviceType)}
+        Date: ${bookingDate}
+        Time: ${bookingTime}
         
-        View booking details: https://creditgyemsacademy.com/admin/bookings/${booking._id}
+        View booking details: ${process.env.FRONTEND_URL}/admin/bookings/${booking._id}
       `,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -330,19 +379,19 @@ exports.sendBookingConfirmation = async (bookingId) => {
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Service:</strong></td>
-              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${serviceTypeName}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${getServiceDisplayName(booking.serviceType)}</td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Date:</strong></td>
-              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatDate(startTime)}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${bookingDate}</td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Time:</strong></td>
-              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatTime(startTime)} - ${formatTime(endTime)}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${bookingTime}</td>
             </tr>
           </table>
           <p style="text-align: center; margin: 30px 0;">
-            <a href="https://creditgyemsacademy.com/admin/bookings/${booking._id}" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">View Booking Details</a>
+            <a href="${process.env.FRONTEND_URL}/admin/bookings/${booking._id}" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">View Booking Details</a>
           </p>
         </div>
       `
@@ -353,7 +402,7 @@ exports.sendBookingConfirmation = async (bookingId) => {
     return true;
   } catch (error) {
     console.error('Error sending booking confirmation:', error);
-    return false;
+    throw error;
   }
 };
 
@@ -386,14 +435,7 @@ exports.sendBookingCancellation = async (bookingId) => {
       });
     };
     
-    // Map service type to readable name
-    const serviceTypes = {
-      credit_repair: 'Credit Repair Consultation',
-      credit_coaching: 'Credit Coaching Session',
-      financial_planning: 'Financial Planning Session'
-    };
-    
-    const serviceTypeName = serviceTypes[booking.serviceType] || booking.serviceType;
+    const serviceTypeName = getServiceDisplayName(booking.serviceType);
     
     const msg = {
       to: user.email,
@@ -408,7 +450,7 @@ exports.sendBookingCancellation = async (bookingId) => {
         Your ${serviceTypeName} booking for ${formatDate(startTime)} at ${formatTime(startTime)} has been cancelled.
         
         If you'd like to schedule another time, please visit:
-        https://creditgyemsacademy.com/booking
+        ${process.env.FRONTEND_URL}/booking
         
         Thank you for your interest in Credit Gyems Academy!
         
@@ -424,7 +466,7 @@ exports.sendBookingCancellation = async (bookingId) => {
           <p>Your <strong>${serviceTypeName}</strong> booking for ${formatDate(startTime)} at ${formatTime(startTime)} has been cancelled.</p>
           <p>If you'd like to schedule another time, please visit our booking page:</p>
           <p style="text-align: center; margin: 30px 0;">
-            <a href="https://creditgyemsacademy.com/booking" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Book Another Session</a>
+            <a href="${process.env.FRONTEND_URL}/booking" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Book Another Session</a>
           </p>
           <p>Thank you for your interest in Credit Gyems Academy!</p>
           <p>Best regards,<br>DorTae Freeman<br>Credit Gyems Academy</p>
@@ -452,7 +494,7 @@ exports.sendBookingCancellation = async (bookingId) => {
         Time: ${formatTime(startTime)}
         Reason: ${booking.cancellationReason || 'No reason provided'}
         
-        View booking details: https://creditgyemsacademy.com/admin/bookings/${booking._id}
+        View booking details: ${process.env.FRONTEND_URL}/admin/bookings/${booking._id}
       `,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -485,7 +527,7 @@ exports.sendBookingCancellation = async (bookingId) => {
             </tr>
           </table>
           <p style="text-align: center; margin: 30px 0;">
-            <a href="https://creditgyemsacademy.com/admin/bookings/${booking._id}" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">View Booking Details</a>
+            <a href="${process.env.FRONTEND_URL}/admin/bookings/${booking._id}" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">View Booking Details</a>
           </p>
         </div>
       `
@@ -534,14 +576,7 @@ exports.sendBookingReminder = async (bookingId) => {
       });
     };
     
-    // Map service type to readable name
-    const serviceTypes = {
-      credit_repair: 'Credit Repair Consultation',
-      credit_coaching: 'Credit Coaching Session',
-      financial_planning: 'Financial Planning Session'
-    };
-    
-    const serviceTypeName = serviceTypes[booking.serviceType] || booking.serviceType;
+    const serviceTypeName = getServiceDisplayName(booking.serviceType);
     
     const msg = {
       to: user.email,
@@ -563,7 +598,7 @@ exports.sendBookingReminder = async (bookingId) => {
         ${booking.meetingLink ? `Meeting Link: ${booking.meetingLink}` : ''}
         
         If you need to reschedule or cancel, please visit:
-        https://creditgyemsacademy.com/account/bookings
+        ${process.env.FRONTEND_URL}/account/bookings
         
         We look forward to speaking with you!
         
@@ -586,7 +621,7 @@ exports.sendBookingReminder = async (bookingId) => {
           </div>
           <p>If you need to reschedule or cancel, please visit your account bookings page:</p>
           <p style="text-align: center; margin: 30px 0;">
-            <a href="https://creditgyemsacademy.com/account/bookings" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Manage Booking</a>
+            <a href="${process.env.FRONTEND_URL}/account/bookings" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Manage Booking</a>
           </p>
           <p>We look forward to speaking with you!</p>
           <p>Best regards,<br>DorTae Freeman<br>Credit Gyems Academy</p>
@@ -656,7 +691,7 @@ exports.sendOrderConfirmation = async (orderId) => {
         ${productItems.map(item => `- ${item.title} (${item.quantity}) - $${item.subtotal}`).join('\n')}
         
         ${hasDownloads ? 'You can access your digital products in your account:' : ''}
-        ${hasDownloads ? 'https://creditgyemsacademy.com/account/orders' : ''}
+        ${hasDownloads ? `${process.env.FRONTEND_URL}/account/orders` : ''}
         
         If you have any questions about your order, please contact us.
         
@@ -700,7 +735,7 @@ exports.sendOrderConfirmation = async (orderId) => {
           ${hasDownloads ? `
             <p>You can access your digital products in your account:</p>
             <p style="text-align: center; margin: 30px 0;">
-              <a href="https://creditgyemsacademy.com/account/orders" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Access Your Products</a>
+              <a href="${process.env.FRONTEND_URL}/account/orders" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Access Your Products</a>
             </p>
           ` : ''}
           
@@ -733,7 +768,7 @@ exports.sendOrderConfirmation = async (orderId) => {
         Items:
         ${productItems.map(item => `- ${item.title} (${item.quantity}) - $${item.subtotal}`).join('\n')}
         
-        View order details: https://creditgyemsacademy.com/admin/orders/${order._id}
+        View order details: ${process.env.FRONTEND_URL}/admin/orders/${order._id}
       `,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -781,7 +816,7 @@ exports.sendOrderConfirmation = async (orderId) => {
           </table>
           
           <p style="text-align: center; margin: 30px 0;">
-            <a href="https://creditgyemsacademy.com/admin/orders/${order._id}" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">View Order Details</a>
+            <a href="${process.env.FRONTEND_URL}/admin/orders/${order._id}" style="background-color: #FFD700; color: #0A2342; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">View Order Details</a>
           </p>
         </div>
       `
@@ -795,3 +830,6 @@ exports.sendOrderConfirmation = async (orderId) => {
     return false;
   }
 };
+
+// Export calendar URL generation function for direct use
+exports.generateCalendarUrls = generateCalendarUrls;

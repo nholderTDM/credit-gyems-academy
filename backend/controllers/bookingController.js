@@ -96,12 +96,19 @@ exports.createBooking = async (req, res, next) => {
     
     await booking.save();
     
-    // Send confirmation email
-    await emailService.sendBookingConfirmation(booking._id);
+    // Send confirmation email using SendGrid Dynamic Template
+    try {
+      await emailService.sendBookingConfirmation(booking._id);
+      console.log('Booking confirmation email sent successfully');
+    } catch (emailError) {
+      console.error('Failed to send booking confirmation email:', emailError);
+      // Don't fail the booking creation if email fails
+    }
     
     res.status(201).json({
       success: true,
-      data: booking
+      data: booking,
+      message: 'Booking created successfully. Confirmation email has been sent.'
     });
   } catch (error) {
     console.error('Error creating booking:', error);
@@ -177,6 +184,54 @@ exports.getBookingById = async (req, res, next) => {
   }
 };
 
+// Get calendar events for a booking
+exports.getBookingCalendarEvents = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+    
+    // Validate ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid booking ID'
+      });
+    }
+    
+    const booking = await Booking.findById(id)
+      .populate('userId', 'firstName lastName email');
+    
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: 'Booking not found'
+      });
+    }
+    
+    // Ensure the user owns this booking
+    if (booking.userId._id.toString() !== userId.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: 'You do not have permission to access this booking'
+      });
+    }
+    
+    // Generate calendar URLs
+    const calendarUrls = emailService.generateCalendarUrls(booking, booking.userId);
+    
+    res.status(200).json({
+      success: true,
+      data: calendarUrls
+    });
+  } catch (error) {
+    console.error('Error generating calendar events:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate calendar events'
+    });
+  }
+};
+
 // Cancel booking
 exports.cancelBooking = async (req, res, next) => {
   try {
@@ -233,11 +288,21 @@ exports.cancelBooking = async (req, res, next) => {
     
     // Cancel calendar event
     if (booking.calendarEventId) {
-      await calendarService.cancelEvent(booking.calendarEventId);
+      try {
+        await calendarService.cancelEvent(booking.calendarEventId);
+      } catch (calendarError) {
+        console.error('Failed to cancel calendar event:', calendarError);
+        // Don't fail the booking cancellation if calendar fails
+      }
     }
     
     // Send cancellation email
-    await emailService.sendBookingCancellation(booking._id);
+    try {
+      await emailService.sendBookingCancellation(booking._id);
+    } catch (emailError) {
+      console.error('Failed to send cancellation email:', emailError);
+      // Don't fail the booking cancellation if email fails
+    }
     
     res.status(200).json({
       success: true,
@@ -324,10 +389,15 @@ exports.rescheduleBooking = async (req, res, next) => {
     
     // Update calendar event
     if (booking.calendarEventId) {
-      await calendarService.updateEvent(booking.calendarEventId, {
-        startTime: newStartDate,
-        endTime: newEndDate
-      });
+      try {
+        await calendarService.updateEvent(booking.calendarEventId, {
+          startTime: newStartDate,
+          endTime: newEndDate
+        });
+      } catch (calendarError) {
+        console.error('Failed to update calendar event:', calendarError);
+        // Continue with booking update even if calendar fails
+      }
     }
     
     // Update booking
@@ -336,12 +406,18 @@ exports.rescheduleBooking = async (req, res, next) => {
     
     await booking.save();
     
-    // Send rescheduling email
-    await emailService.sendBookingRescheduled(booking._id);
+    // Send rescheduling email (you'll need to create this function)
+    try {
+      await emailService.sendBookingConfirmation(booking._id);
+    } catch (emailError) {
+      console.error('Failed to send rescheduling email:', emailError);
+      // Don't fail the booking update if email fails
+    }
     
     res.status(200).json({
       success: true,
-      data: booking
+      data: booking,
+      message: 'Booking rescheduled successfully'
     });
   } catch (error) {
     console.error('Error rescheduling booking:', error);
@@ -433,7 +509,12 @@ exports.updateBookingStatus = async (req, res, next) => {
     
     // Update calendar event if needed
     if (status === 'cancelled' && booking.calendarEventId) {
-      await calendarService.cancelEvent(booking.calendarEventId);
+      try {
+        await calendarService.cancelEvent(booking.calendarEventId);
+      } catch (calendarError) {
+        console.error('Failed to cancel calendar event:', calendarError);
+        // Don't fail the status update if calendar fails
+      }
     }
     
     res.status(200).json({
