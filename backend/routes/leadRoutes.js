@@ -1,14 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const leadController = require('../controllers/leadController');
-const { protect, adminOnly } = require('../middleware/authMiddleware');
+// Comment out auth middleware for now
+// const { protect, restrictTo } = require('../middleware/auth');
 
-// Public routes
+// Public routes (no authentication required)
 router.post('/', leadController.createLead);
 
-// Admin routes
-router.get('/', protect, adminOnly, leadController.getLeads);
-router.put('/:id/status', protect, adminOnly, leadController.updateLeadStatus);
-router.post('/:id/convert', protect, adminOnly, leadController.convertLead);
+// Comment out admin routes until auth is working
+/*
+// Protected admin routes
+router.use(protect); // Apply authentication to all routes below
+router.use(restrictTo('admin')); // Apply admin restriction to all routes below
+
+// Lead management routes
+router.get('/', leadController.getLeads);
+router.get('/stats', leadController.getLeadStats);
+router.get('/:id', leadController.getLeadById);
+router.put('/:id/status', leadController.updateLeadStatus);
+router.post('/:id/convert', leadController.convertLead);
+router.delete('/:id', leadController.deleteLead);
+*/
 
 module.exports = router;

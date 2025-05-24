@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { auth } from '../config/firebase';
+import emailjs from '@emailjs/browser';
 
 // Component for animated counter
 const AnimatedCounter = ({ value }) => {
@@ -151,32 +152,55 @@ const Homepage = () => {
     if (!email) return;
     
     setLoading(true);
+    
     try {
-      // Send to API
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/leads`, {
+      // 1. Save to database first
+      const backendResponse = await fetch('http://localhost:5000/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
           email, 
-          source: "free_guide",
-          interests: ["credit_repair"]
+          source: "Free Credit Guide",
+          interests: ["Credit Repair"]
         }),
       });
       
-      if (response.ok) {
-        setSuccess(true);
-        setTimeout(() => {
-          setEmail('');
-          setSuccess(false);
-        }, 3000);
+      if (backendResponse.ok) {
+        console.log('✅ Lead saved to database');
       } else {
-        alert('Something went wrong. Please try again.');
+        console.log('⚠️ Database save failed, but continuing...');
       }
+      
+      // 2. Send email notification using EmailJS
+      try {
+        await emailjs.send(
+          'service_3hft8po', // Your actual Service ID
+          'template_rzpoecj', // Your actual Template ID
+          {
+            user_email: email,
+            source: 'Free Credit Guide',
+            interests: 'Credit Repair',
+            date: new Date().toLocaleDateString()
+          },
+          'IH1yg7SuOA70tmIaK' // Your actual Public Key
+        );
+        console.log('✅ Email notification sent to your inbox');
+      } catch (emailError) {
+        console.log('⚠️ Email failed but lead was saved:', emailError);
+      }
+      
+      // Show success
+      setSuccess(true);
+      setTimeout(() => {
+        setEmail('');
+        setSuccess(false);
+      }, 3000);
+      
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Something went wrong. Please try again.');
+      console.error('❌ Lead capture failed:', error);
+      alert('Something went wrong. Please try again or contact us directly.');
     } finally {
       setLoading(false);
     }
@@ -245,7 +269,7 @@ const Homepage = () => {
                 <div className="absolute -top-4 -left-4 right-6 bottom-6 bg-gradient-to-br from-yellow-200/30 to-red-200/30 rounded-lg -z-10"></div>
                 <div className="bg-white/90 backdrop-blur border border-yellow-300/30 rounded-lg p-6 shadow-xl">
                   <img 
-                    src="/hero-image.jpg" 
+                    src="/hero/hero-image.jpg" 
                     alt="Credit transformation journey" 
                     className="w-full rounded-lg mb-6"
                   />
@@ -297,7 +321,7 @@ const Homepage = () => {
               <div className="relative">
                 <div className="absolute top-5 -left-5 w-full h-full rounded-full bg-gradient-to-br from-yellow-300/30 to-red-300/30 -z-10"></div>
                 <img
-                  src="/dortae-freeman.jpg"
+                  src="/images/dortae-freeman.jpg"
                   alt="DorTae Freeman"
                   className="rounded-full w-72 h-72 md:w-96 md:h-96 object-cover border-6 border-white shadow-xl"
                 />
@@ -494,7 +518,7 @@ const Homepage = () => {
               <div className="relative mx-auto max-w-xs">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-secondary/40 blur-3xl -z-10"></div>
                 <img
-                  src="/credit-guide.jpg"
+                  src="/images/credit-guide.jpg"
                   alt="Credit Guide Preview"
                   className="w-full rounded-lg shadow-2xl border border-white/20"
                 />

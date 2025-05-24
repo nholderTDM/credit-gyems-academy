@@ -3,119 +3,71 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-white pt-16 pb-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-2">
-            <div className="flex items-center mb-6">
-              <Link to="/" className="flex items-center">
-                <img src="/logo.png" alt="Credit Gyems Academy Logo" className="h-10 w-auto mr-3" />
-                <span className="font-bold text-lg text-slate-800">Credit Gyems Academy</span>
-              </Link>
+    <footer className="bg-slate-900 text-white">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="col-span-1 md:col-span-2">
+            <div className="flex items-center mb-4">
+              <div className="h-10 w-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mr-3">
+                <span className="text-white font-bold text-lg">CG</span>
+              </div>
+              <span className="font-bold text-xl text-white">Credit Gyems Academy</span>
             </div>
-            
-            <p className="text-slate-600 mb-6 pr-8">
-              Transforming credit journeys and building lasting financial freedom through expert guidance, education, and proven strategies.
+            <p className="text-slate-300 mb-6 max-w-md">
+              Transform your credit journey with expert repair, coaching, and financial planning services. 
+              Join thousands who have achieved financial freedom with DorTae Freeman.
             </p>
-            
-            <div className="flex gap-4 mb-6">
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-primary-light hover:text-primary transition-colors"
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            <div className="flex space-x-4">
+              <a href="#" className="text-slate-400 hover:text-primary transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
                 </svg>
               </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-primary-light hover:text-primary transition-colors"
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              <a href="#" className="text-slate-400 hover:text-primary transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
                 </svg>
               </a>
-              <a 
-                href="https://linkedin.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-primary-light hover:text-primary transition-colors"
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                  <rect x="2" y="9" width="4" height="12"></rect>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-              </a>
-              <a 
-                href="https://youtube.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-primary-light hover:text-primary transition-colors"
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+              <a href="#" className="text-slate-400 hover:text-primary transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                 </svg>
               </a>
             </div>
           </div>
-          
+
+          {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-slate-800 mb-6">Services</h4>
-            <ul className="space-y-4">
-              <li><Link to="/services/credit-repair" className="text-slate-600 hover:text-primary transition-colors">Credit Repair</Link></li>
-              <li><Link to="/services/credit-coaching" className="text-slate-600 hover:text-primary transition-colors">Credit Coaching</Link></li>
-              <li><Link to="/services/financial-planning" className="text-slate-600 hover:text-primary transition-colors">Financial Planning</Link></li>
-              <li><Link to="/booking" className="text-slate-600 hover:text-primary transition-colors">Consultation</Link></li>
+            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li><Link to="/services" className="text-slate-300 hover:text-primary transition-colors">Services</Link></li>
+              <li><Link to="/products" className="text-slate-300 hover:text-primary transition-colors">Products</Link></li>
+              <li><Link to="/about" className="text-slate-300 hover:text-primary transition-colors">About</Link></li>
+              <li><Link to="/blog" className="text-slate-300 hover:text-primary transition-colors">Resources</Link></li>
+              <li><Link to="/booking" className="text-slate-300 hover:text-primary transition-colors">Book Consultation</Link></li>
             </ul>
           </div>
-          
+
+          {/* Support */}
           <div>
-            <h4 className="font-semibold text-slate-800 mb-6">Products</h4>
-            <ul className="space-y-4">
-              <li><Link to="/products?category=ebooks" className="text-slate-600 hover:text-primary transition-colors">E-Books</Link></li>
-              <li><Link to="/products?category=masterclasses" className="text-slate-600 hover:text-primary transition-colors">Masterclasses</Link></li>
-              <li><Link to="/blog/resources" className="text-slate-600 hover:text-primary transition-colors">Resources</Link></li>
-              <li><Link to="/community" className="text-slate-600 hover:text-primary transition-colors">Community</Link></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-slate-800 mb-6">Company</h4>
-            <ul className="space-y-4">
-              <li><Link to="/about" className="text-slate-600 hover:text-primary transition-colors">About</Link></li>
-              <li><Link to="/blog" className="text-slate-600 hover:text-primary transition-colors">Blog</Link></li>
-              <li><Link to="/about#testimonials" className="text-slate-600 hover:text-primary transition-colors">Testimonials</Link></li>
-              <li><Link to="/contact" className="text-slate-600 hover:text-primary transition-colors">Contact</Link></li>
+            <h3 className="font-semibold text-lg mb-4">Support</h3>
+            <ul className="space-y-2">
+              <li><Link to="/contact" className="text-slate-300 hover:text-primary transition-colors">Contact Us</Link></li>
+              <li><Link to="/faq" className="text-slate-300 hover:text-primary transition-colors">FAQ</Link></li>
+              <li><Link to="/privacy" className="text-slate-300 hover:text-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-slate-300 hover:text-primary transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
         </div>
-        
-        <hr className="my-10 border-slate-200" />
-        
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} Credit Gyems Academy, LLC. All rights reserved.
+
+        <div className="border-t border-slate-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-slate-400 text-sm">
+            © 2025 Credit Gyems Academy. All rights reserved.
           </p>
-          
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link to="/privacy-policy" className="text-slate-500 hover:text-primary transition-colors text-sm">
-              Privacy Policy
-            </Link>
-            <Link to="/terms-of-service" className="text-slate-500 hover:text-primary transition-colors text-sm">
-              Terms of Service
-            </Link>
-            <Link to="/disclaimer" className="text-slate-500 hover:text-primary transition-colors text-sm">
-              Disclaimer
-            </Link>
-          </div>
+          <p className="text-slate-400 text-sm mt-2 md:mt-0">
+            Built with ❤️ for financial freedom
+          </p>
         </div>
       </div>
     </footer>
