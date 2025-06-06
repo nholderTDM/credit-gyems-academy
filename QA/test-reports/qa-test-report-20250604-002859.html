@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Credit Gyems Academy - QA Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #FFD700; text-align: center; }
+        h2 { color: #333; border-bottom: 2px solid #FFD700; padding-bottom: 10px; }
+        h3 { color: #666; }
+        .summary { display: flex; justify-content: space-around; margin: 20px 0; }
+        .stat-box { text-align: center; padding: 20px; border-radius: 8px; flex: 1; margin: 0 10px; }
+        .stat-box.passed { background: #d4edda; color: #155724; }
+        .stat-box.failed { background: #f8d7da; color: #721c24; }
+        .stat-box.warnings { background: #fff3cd; color: #856404; }
+        .stat-box.info { background: #d1ecf1; color: #0c5460; }
+        .stat-number { font-size: 36px; font-weight: bold; }
+        .stat-label { font-size: 14px; margin-top: 5px; }
+        .section { margin: 20px 0; }
+        .test-item { padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .test-item.success { background: #f0f9ff; border-left: 4px solid #28a745; }
+        .test-item.failure { background: #fff5f5; border-left: 4px solid #dc3545; }
+        .test-item.warning { background: #fffbf0; border-left: 4px solid #ffc107; }
+        .error-detail { color: #dc3545; font-size: 12px; margin-top: 5px; font-family: monospace; }
+        .timestamp { color: #999; font-size: 12px; }
+        .action-items { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .action-items h3 { margin-top: 0; }
+        .action-items ul { margin: 10px 0; }
+        .category-section { margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+        .fix-suggestion { background: #e7f3ff; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .chart { margin: 20px 0; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Credit Gyems Academy - QA Test Report</h1>
+        <p style="text-align: center; color: #666;">Generated: 2025-06-04 00:28:59</p>
+        
+        <div class="summary">
+            <div class="stat-box passed">
+                <div class="stat-number">168</div>
+                <div class="stat-label">Tests Passed</div>
+            </div>
+            <div class="stat-box failed">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Tests Failed</div>
+            </div>
+            <div class="stat-box warnings">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Warnings</div>
+            </div>
+            <div class="stat-box info">
+                <div class="stat-number">98.82%</div>
+                <div class="stat-label">Pass Rate</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Test Execution Summary</h2>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Total Tests Executed</td>
+                    <td>170</td>
+                </tr>
+                <tr>
+                    <td>Execution Time</td>
+                    <td>00:01:24</td>
+                </tr>
+                <tr>
+                    <td>Test Environment</td>
+                    <td>Local Development (Frontend: 3000, Backend: 5000)</td>
+                </tr>
+                <tr>
+                    <td>Project Root</td>
+                    <td>D:\credit-gyems-academy</td>
+                </tr>
+                <tr>
+                    <td>Test Data Created</td>
+                    <td>Users: 6, Products: 3, Services: 3</td>
+                </tr>
+            </table>
+        </div>        <div class="action-items">
+            <h3>Recommended Action Items</h3>
+            <ul>            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Test Coverage Summary</h2>
+            <table>
+                <tr>
+                    <th>Feature Area</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>User Authentication</td>
+                    <td>✅ Passed</td>
+                    <td>Registration, login, profile management, password reset</td>
+                </tr>
+                <tr>
+                    <td>E-commerce</td>
+                    <td>✅ Passed</td>
+                    <td>Product browsing, cart, checkout, payment processing</td>
+                </tr>
+                <tr>
+                    <td>Booking System</td>
+                    <td>✅ Passed</td>
+                    <td>Service booking, calendar integration, availability</td>
+                </tr>
+                <tr>
+                    <td>Community Forum</td>
+                    <td>✅ Passed</td>
+                    <td>Discussions, posts, likes, moderation</td>
+                </tr>
+                <tr>
+                    <td>Lead Capture</td>
+                    <td>✅ Passed</td>
+                    <td>Lead forms, email delivery, analytics</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Next Steps</h2>
+            <ol>
+                <li>Address all failed tests starting with critical authentication and payment flows</li>
+                <li>Re-run failed tests after fixes are implemented</li>
+                <li>Set up continuous integration to run these tests automatically</li>
+                <li>Consider adding more edge case scenarios for robust testing</li>
+                <li>Document any manual testing requirements not covered by automation</li>
+            </ol>
+        </div>
+        
+        <div class="footer">
+            <p>Report generated by Credit Gyems Academy QA Test Suite v1.0</p>
+            <p>Script Location: D:\credit-gyems-academy\scripts\TS_CGA_v1</p>
+        </div>
+    </div>
+</body>
+</html>

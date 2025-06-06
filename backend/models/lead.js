@@ -29,7 +29,7 @@ const LeadSchema = new Schema({
   // Source Information
   source: {
     type: String,
-    enum: ['landing_page', 'free_guide', 'blog', 'referral', 'social_media', 'website', 'other'],
+    enum: ['landing_page', 'free_guide', 'blog', 'referral', 'social_media', 'website', 'contact_form', 'google_ads', 'other'],
     default: 'website'
   },
   landingPage: {
@@ -61,8 +61,8 @@ const LeadSchema = new Schema({
   }],
   downloadedGuides: [{
     guideId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Product'
+      type: String,  // Changed from ObjectId reference to String
+      trim: true
     },
     downloadedAt: {
       type: Date,
@@ -302,3 +302,4 @@ LeadSchema.methods.calculateLeadScore = function() {
 };
 
 module.exports = mongoose.model('Lead', LeadSchema);
+

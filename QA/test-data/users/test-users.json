@@ -1,0 +1,203 @@
+[
+    {
+      "id": "test_user_1",
+      "email": "test@example.com",
+      "password": "$2a$10$YourHashedPasswordHere",
+      "rawPassword": "Test123!",
+      "firstName": "Test",
+      "lastName": "User",
+      "phone": "555-123-4567",
+      "role": "user",
+      "creditScore": 650,
+      "creditGoal": 750,
+      "profile": {
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=test",
+        "bio": "Working on improving my credit score",
+        "location": "Atlanta, GA",
+        "joinedCommunity": true,
+        "emailVerified": true,
+        "twoFactorEnabled": false
+      },
+      "subscription": null,
+      "stats": {
+        "ordersCount": 5,
+        "bookingsCount": 2,
+        "discussionsCount": 10,
+        "totalSpent": 299.95
+      },
+      "preferences": {
+        "emailNotifications": true,
+        "smsNotifications": false,
+        "marketingEmails": true
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "lastLogin": "2024-01-15T08:00:00Z",
+      "isActive": true
+    },
+    {
+      "id": "test_admin_1",
+      "email": "admin@example.com",
+      "password": "$2a$10$YourHashedPasswordHere",
+      "rawPassword": "Admin123!",
+      "firstName": "Admin",
+      "lastName": "User",
+      "phone": "555-999-8888",
+      "role": "admin",
+      "creditScore": 780,
+      "creditGoal": 800,
+      "profile": {
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=admin",
+        "bio": "Credit Gyems Academy Administrator",
+        "location": "Atlanta, GA",
+        "joinedCommunity": true,
+        "emailVerified": true,
+        "twoFactorEnabled": true
+      },
+      "permissions": [
+        "manage_users",
+        "manage_products",
+        "manage_orders",
+        "manage_bookings",
+        "view_analytics",
+        "manage_content"
+      ],
+      "createdAt": "2023-01-01T00:00:00Z",
+      "lastLogin": "2024-01-15T07:00:00Z",
+      "isActive": true
+    },
+    {
+      "id": "test_premium_1",
+      "email": "premium@example.com",
+      "password": "$2a$10$YourHashedPasswordHere",
+      "rawPassword": "Premium123!",
+      "firstName": "Premium",
+      "lastName": "Member",
+      "phone": "555-777-9999",
+      "role": "premium",
+      "creditScore": 720,
+      "creditGoal": 800,
+      "profile": {
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=premium",
+        "bio": "Premium member working towards 800 score",
+        "location": "Miami, FL",
+        "joinedCommunity": true,
+        "emailVerified": true,
+        "twoFactorEnabled": false
+      },
+      "subscription": {
+        "plan": "monthly",
+        "status": "active",
+        "startDate": "2024-01-01T00:00:00Z",
+        "nextBilling": "2024-02-01T00:00:00Z",
+        "amount": 29.99,
+        "stripeSubscriptionId": "sub_test_123456"
+      },
+      "stats": {
+        "ordersCount": 12,
+        "bookingsCount": 8,
+        "discussionsCount": 25,
+        "totalSpent": 899.88
+      },
+      "createdAt": "2023-06-15T00:00:00Z",
+      "lastLogin": "2024-01-14T20:00:00Z",
+      "isActive": true
+    },
+    {
+      "id": "test_suspended_1",
+      "email": "suspended@example.com",
+      "password": "$2a$10$YourHashedPasswordHere",
+      "rawPassword": "Suspended123!",
+      "firstName": "Suspended",
+      "lastName": "Account",
+      "phone": "555-666-1111",
+      "role": "user",
+      "creditScore": 580,
+      "creditGoal": 700,
+      "profile": {
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=suspended",
+        "bio": "Account suspended for testing",
+        "location": "Houston, TX",
+        "joinedCommunity": false,
+        "emailVerified": true,
+        "twoFactorEnabled": false
+      },
+      "suspension": {
+        "reason": "Terms violation - testing purposes",
+        "suspendedAt": "2024-01-10T00:00:00Z",
+        "suspendedBy": "test_admin_1"
+      },
+      "createdAt": "2023-11-01T00:00:00Z",
+      "lastLogin": "2024-01-09T18:00:00Z",
+      "isActive": false
+    },
+    {
+      "id": "test_new_user",
+      "email": "newuser@example.com",
+      "password": "$2a$10$YourHashedPasswordHere",
+      "rawPassword": "NewUser123!",
+      "firstName": "New",
+      "lastName": "User",
+      "phone": "555-222-3333",
+      "role": "user",
+      "creditScore": null,
+      "creditGoal": null,
+      "profile": {
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=newuser",
+        "bio": "",
+        "location": "",
+        "joinedCommunity": false,
+        "emailVerified": false,
+        "twoFactorEnabled": false
+      },
+      "stats": {
+        "ordersCount": 0,
+        "bookingsCount": 0,
+        "discussionsCount": 0,
+        "totalSpent": 0
+      },
+      "onboarding": {
+        "completed": false,
+        "steps": {
+          "profileComplete": false,
+          "creditScoreAdded": false,
+          "firstPurchase": false,
+          "joinedCommunity": false
+        }
+      },
+      "createdAt": "2024-01-15T00:00:00Z",
+      "lastLogin": "2024-01-15T00:00:00Z",
+      "isActive": true
+    },
+    {
+      "id": "test_coach",
+      "email": "coach@creditgyems.com",
+      "password": "$2a$10$YourHashedPasswordHere",
+      "rawPassword": "Coach123!",
+      "firstName": "Coach",
+      "lastName": "Tae",
+      "phone": "555-100-2000",
+      "role": "admin",
+      "creditScore": 850,
+      "creditGoal": 850,
+      "profile": {
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=coach",
+        "bio": "Founder of Credit Gyems Academy",
+        "location": "Atlanta, GA",
+        "joinedCommunity": true,
+        "emailVerified": true,
+        "twoFactorEnabled": true,
+        "isVerified": true,
+        "verificationBadge": true
+      },
+      "permissions": "all",
+      "specialAccess": [
+        "system_configuration",
+        "financial_reports",
+        "user_data_export",
+        "platform_analytics"
+      ],
+      "createdAt": "2022-01-01T00:00:00Z",
+      "lastLogin": "2024-01-15T06:00:00Z",
+      "isActive": true
+    }
+  ]

@@ -1,3 +1,4 @@
+const { initializeWithFirebaseCLI } = require('./firebaseCLIAdapter');
 // services/ebookService.js - Complete E-Book Service with Alternative Authentication
 const admin = require('firebase-admin');
 const PDFDocument = require('pdfkit');
@@ -12,65 +13,17 @@ const os = require('os');
 let firebaseInitialized = false;
 let bucket = null;
 
+
 const initializeFirebase = async () => {
   if (firebaseInitialized) return bucket;
   
   try {
-    console.log('🔥 Initializing Firebase Admin SDK...');
-    
-    // Strategy 1: Try with service account key (if available)
-    if (process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL) {
-      console.log('📝 Using service account credentials...');
-      admin.initializeApp({
-        credential: admin.credential.cert({
-          projectId: process.env.FIREBASE_PROJECT_ID,
-          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-          privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
-        }),
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-      });
-    } 
-    // Strategy 2: Use Application Default Credentials
-    else {
-      console.log('🔐 Using Application Default Credentials...');
-      admin.initializeApp({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-      });
-    }
-    
-    bucket = admin.storage().bucket();
-    
-    // Test connection
-    await bucket.getMetadata();
-    console.log('✅ Firebase initialized successfully');
-    console.log(`📁 Storage bucket: ${bucket.name}`);
-    
+    // Use Firebase CLI adapter
+    bucket = await initializeWithFirebaseCLI();
     firebaseInitialized = true;
     return bucket;
-    
   } catch (error) {
     console.error('❌ Firebase initialization failed:', error.message);
-    
-    // Strategy 3: Fallback initialization for development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🛠️ Attempting fallback initialization...');
-      try {
-        admin.initializeApp({
-          projectId: process.env.FIREBASE_PROJECT_ID || 'credit-gyems-academy',
-          storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'credit-gyems-academy.appspot.com'
-        });
-        
-        bucket = admin.storage().bucket();
-        firebaseInitialized = true;
-        console.log('✅ Fallback Firebase initialization successful');
-        return bucket;
-      } catch (fallbackError) {
-        console.error('❌ Fallback initialization also failed:', fallbackError.message);
-        throw new Error('Firebase initialization failed. Please run: gcloud auth application-default login');
-      }
-    }
-    
     throw error;
   }
 };

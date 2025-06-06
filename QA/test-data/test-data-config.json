@@ -1,0 +1,85 @@
+{
+  "PrimaryUser": {
+    "Email": "test_20250604002803_4039@creditgyemstest.com",
+    "Password": "TestPass123!"
+  },
+  "Users": [
+    {
+      "email": "test_20250604002803_4039@creditgyemstest.com",
+      "password": "TestPass123!",
+      "role": "regular",
+      "testId": "user_regular_1"
+    },
+    {
+      "email": "test_20250604002804_2763@creditgyemstest.com",
+      "password": "TestPass123!",
+      "role": "regular",
+      "testId": "user_regular_2"
+    },
+    {
+      "email": "test_20250604002806_3947@creditgyemstest.com",
+      "password": "TestPass123!",
+      "role": "regular",
+      "testId": "user_regular_3"
+    },
+    {
+      "email": "test_20250604002807_2448@creditgyemstest.com",
+      "password": "TestPass123!",
+      "role": "premium",
+      "testId": "user_premium_1"
+    },
+    {
+      "email": "test_20250604002808_894@creditgyemstest.com",
+      "password": "TestPass123!",
+      "role": "premium",
+      "testId": "user_premium_2"
+    },
+    {
+      "email": "test_20250604002809_1092@creditgyemstest.com",
+      "password": "TestPass123!",
+      "role": "admin",
+      "testId": "user_admin_1"
+    }
+  ],
+  "CreatedAt": "2025-06-04T00:28:34.7151907-04:00",
+  "Services": [
+    {
+      "id": "683f185d8eb9d8b1b9229b22",
+      "name": "Credit Repair Consultation",
+      "type": "credit_repair",
+      "price": 149
+    },
+    {
+      "id": "683f185d8eb9d8b1b9229b26",
+      "name": "Credit Coaching Session",
+      "type": "credit_coaching",
+      "price": 99
+    },
+    {
+      "id": "683f185d8eb9d8b1b9229b2a",
+      "name": "Financial Planning Session",
+      "type": "financial_planning",
+      "price": 199
+    }
+  ],
+  "Products": [
+    {
+      "id": null,
+      "title": "Credit Repair Mastery Guide",
+      "type": "ebook",
+      "price": 49.99
+    },
+    {
+      "id": null,
+      "title": "Financial Freedom Blueprint",
+      "type": "ebook",
+      "price": 79.99
+    },
+    {
+      "id": null,
+      "title": "Credit Coaching Masterclass",
+      "type": "masterclass",
+      "price": 299.99
+    }
+  ]
+}

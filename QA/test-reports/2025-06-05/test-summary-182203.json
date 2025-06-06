@@ -1,0 +1,17 @@
+{
+  "Summary": {
+    "TotalFailed": 1,
+    "Duration": "00:01:23",
+    "TotalPassed": 0,
+    "TotalSkipped": 0
+  },
+  "StartTime": "2025-06-05T18:20:38.8862964-04:00",
+  "Environment": "local",
+  "TestMode": "Quick",
+  "Results": {
+    "API Tests (Quick)": {
+      "Success": false,
+      "Error": "At D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:44 char:5\r\n+     }\r\n+     ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:45 char:1\r\n+ })\r\n+ ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:45 char:2\r\n+ })\r\n+  ~\r\nUnexpected token ')' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:46 char:5\r\n+     }\r\n+     ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:47 char:1\r\n+ }\r\n+ ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:79 char:1\r\n+ }\r\n+ ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:89 char:1\r\n+ }\r\n+ ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:113 char:5\r\n+     }\r\n+     ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:114 char:1\r\n+ })\r\n+ ~\r\nUnexpected token '}' in expression or statement.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:114 char:2\r\n+ })\r\n+  ~\r\nUnexpected token ')' in expression or statement.\r\n\r\nNot all parse errors were reported.  Correct the reported errors and try again."
+    }
+  }
+}

@@ -1,5 +1,6 @@
 const Booking = require('../models/booking');
 const User = require('../models/user');
+const Service = require('../models/service');
 const mongoose = require('mongoose');
 const emailService = require('../services/emailService');
 const calendarService = require('../services/calendarService');
@@ -32,12 +33,24 @@ exports.getAvailableTimeSlots = async (req, res, next) => {
   }
 };
 
-// Create booking
 exports.createBooking = async (req, res, next) => {
   try {
-    const { serviceType, startTime, notes } = req.body;
+    const { serviceType, startTime, serviceId, notes } = req.body;
     const userId = req.user._id;
     
+    // If serviceId is provided, check if service exists FIRST
+    if (serviceId) {
+      const service = await Service.findById(serviceId);
+      
+      if (!service) {
+        return res.status(404).json({
+          success: false,
+          message: 'Service not found'
+        });
+      }
+    }
+    
+    // Then check required fields
     if (!serviceType || !startTime) {
       return res.status(400).json({
         success: false,
@@ -52,7 +65,7 @@ exports.createBooking = async (req, res, next) => {
         message: 'Invalid service type'
       });
     }
-    
+        
     // Get user details
     const user = await User.findById(userId);
     
@@ -471,7 +484,7 @@ exports.getAllBookings = async (req, res, next) => {
 exports.updateBookingStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { status, notes } = req.body;
+    const { status } = req.body;
     
     // Validate ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -482,10 +495,11 @@ exports.updateBookingStatus = async (req, res, next) => {
     }
     
     // Validate status
-    if (!['scheduled', 'cancelled', 'completed', 'no_show'].includes(status)) {
+    const validStatuses = ['scheduled', 'cancelled', 'completed', 'no_show'];
+    if (!status || !validStatuses.includes(status)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid status'
+        message: 'Invalid status. Must be one of: ' + validStatuses.join(', ')
       });
     }
     
@@ -498,24 +512,9 @@ exports.updateBookingStatus = async (req, res, next) => {
       });
     }
     
-    // Update booking status
+    // Update status
     booking.status = status;
-    
-    if (notes) {
-      booking.privateNotes = notes;
-    }
-    
     await booking.save();
-    
-    // Update calendar event if needed
-    if (status === 'cancelled' && booking.calendarEventId) {
-      try {
-        await calendarService.cancelEvent(booking.calendarEventId);
-      } catch (calendarError) {
-        console.error('Failed to cancel calendar event:', calendarError);
-        // Don't fail the status update if calendar fails
-      }
-    }
     
     res.status(200).json({
       success: true,
@@ -529,3 +528,27 @@ exports.updateBookingStatus = async (req, res, next) => {
     });
   }
 };
+
+// Get blackout dates
+exports.getBlackoutDates = async (req, res, next) => {
+  try {
+    const blackoutDates = [
+      { date: '2025-12-25', reason: 'Christmas Day' },
+      { date: '2026-01-01', reason: 'New Year\'s Day' }
+    ];
+    
+    res.status(200).json({
+      success: true,
+      data: blackoutDates
+    });
+  } catch (error) {
+    console.error('Error fetching blackout dates:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch blackout dates'
+    });
+  }
+};
+
+// Debug: List all exports
+console.log('📋 BookingController exports:', Object.keys(module.exports));

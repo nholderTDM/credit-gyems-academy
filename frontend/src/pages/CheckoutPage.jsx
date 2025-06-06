@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../contexts/useCart';
 
 // Initialize Stripe
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);

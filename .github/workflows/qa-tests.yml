@@ -1,0 +1,208 @@
+name: QA Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Test mode'
+        required: true
+        default: 'Standard'
+        type: choice
+        options:
+          - Quick
+          - Standard
+          - Full
+          - API
+          - GUI
+          - Edge
+          - All
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  test:
+    runs-on: windows-latest
+    
+    # Define environment variables at the job level
+    env:
+      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      TEST_JWT_SECRET: ${{ secrets.TEST_JWT_SECRET }}
+      TEST_STRIPE_SECRET_KEY: ${{ secrets.TEST_STRIPE_SECRET_KEY }}
+      TEST_SENDGRID_API_KEY: ${{ secrets.TEST_SENDGRID_API_KEY }}
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+      STAGING_API_URL: ${{ secrets.STAGING_API_URL }}
+      STAGING_FRONTEND_URL: ${{ secrets.STAGING_FRONTEND_URL }}
+      PROD_API_URL: ${{ secrets.PROD_API_URL }}
+      PROD_FRONTEND_URL: ${{ secrets.PROD_FRONTEND_URL }}
+    
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          **/node_modules
+          ~/.npm
+          %LocalAppData%\npm-cache
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        npm ci
+    
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: Install Playwright
+      if: contains(github.event.inputs.test_mode, 'GUI') || github.event.inputs.test_mode == 'Standard' || github.event.inputs.test_mode == 'Full' || github.event.inputs.test_mode == 'All' || github.event.inputs.test_mode == ''
+      run: |
+        cd QA\scripts\gui-tests
+        npm init -y
+        npm install -D @playwright/test axe-playwright
+        npx playwright install --with-deps
+    
+    - name: Install K6
+      if: contains(github.event.inputs.test_mode, 'Stress') || github.event.inputs.test_mode == 'Full' || github.event.inputs.test_mode == 'All'
+      run: |
+        choco install k6 -y
+    
+    - name: Setup test environment
+      run: |
+        # Create backend .env file using environment variables
+        $backendEnv = @"
+        PORT=5000
+        MONGODB_URI=$env:TEST_MONGODB_URI
+        JWT_SECRET=$env:TEST_JWT_SECRET
+        STRIPE_SECRET_KEY=$env:TEST_STRIPE_SECRET_KEY
+        SENDGRID_API_KEY=$env:TEST_SENDGRID_API_KEY
+        FIREBASE_PROJECT_ID=$env:FIREBASE_PROJECT_ID
+        NODE_ENV=test
+        "@
+        $backendEnv | Out-File -FilePath backend\.env -Encoding UTF8
+        
+        # Create frontend .env file using environment variables
+        $frontendEnv = @"
+        VITE_API_URL=$env:STAGING_API_URL
+        VITE_FIREBASE_API_KEY=$env:FIREBASE_API_KEY
+        VITE_FIREBASE_AUTH_DOMAIN=$env:FIREBASE_AUTH_DOMAIN
+        VITE_FIREBASE_PROJECT_ID=$env:FIREBASE_PROJECT_ID
+        "@
+        $frontendEnv | Out-File -FilePath frontend\.env -Encoding UTF8
+        
+        # Verify files were created
+        Write-Host "Backend .env created:"
+        Get-Content backend\.env | Select-Object -First 5
+        Write-Host "`nFrontend .env created:"
+        Get-Content frontend\.env | Select-Object -First 5
+    
+    - name: Run QA tests
+      run: |
+        cd QA\scripts\master
+        .\Run-AllTests.ps1 -TestMode "${{ github.event.inputs.test_mode || 'Standard' }}" -Environment "${{ github.event.inputs.environment || 'staging' }}" -CIMode -GenerateReport
+    
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-reports
+        path: QA\test-reports\
+        retention-days: 30
+    
+    - name: Upload Playwright traces
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-traces
+        path: QA\scripts\gui-tests\test-results\
+        retention-days: 7
+    
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Find the latest test summary
+          const reportsDir = path.join('QA', 'test-reports');
+          const today = new Date().toISOString().split('T')[0];
+          const todayDir = path.join(reportsDir, today);
+          
+          if (fs.existsSync(todayDir)) {
+            const files = fs.readdirSync(todayDir)
+              .filter(f => f.startsWith('test-summary-'))
+              .sort()
+              .reverse();
+            
+            if (files.length > 0) {
+              const summaryContent = fs.readFileSync(path.join(todayDir, files[0]), 'utf8');
+              const summary = JSON.parse(summaryContent);
+              
+              const passed = summary.Summary?.TotalPassed || 0;
+              const failed = summary.Summary?.TotalFailed || 0;
+              const duration = summary.Summary?.Duration || 'N/A';
+              
+              const detailsText = summary.Results ? Object.entries(summary.Results).map(([suite, result]) => 
+                `- ${suite}: ${result.Success ? '✅ Passed' : '❌ Failed'}`
+              ).join('\n') : 'No details available';
+              
+              const comment = `## 🧪 QA Test Results
+              
+              **Test Mode:** ${summary.TestMode || 'Standard'}
+              **Environment:** ${summary.Environment || 'staging'}
+              
+              ### Summary
+              - ✅ Passed: ${passed}
+              - ❌ Failed: ${failed}
+              - ⏱️ Duration: ${duration}
+              
+              ### Details
+              ${detailsText}
+              
+              [View full report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+          }
+    
+    - name: Fail if tests failed
+      if: failure()
+      run: exit 1

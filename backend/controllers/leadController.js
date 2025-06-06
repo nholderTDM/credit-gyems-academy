@@ -159,9 +159,13 @@ exports.createLead = async (req, res, next) => {
     
     // Don't expose internal errors to client
     if (error.name === 'ValidationError') {
+      // In development, show detailed validation errors
+      const errors = Object.values(error.errors).map(e => e.message);
+      console.error('Validation errors:', errors);
       return res.status(400).json({
         success: false,
-        message: 'Invalid input data'
+        message: 'Invalid input data',
+        ...(process.env.NODE_ENV === 'development' && { errors })
       });
     }
     
@@ -685,6 +689,482 @@ exports.getLeadStats = async (req, res, next) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch lead statistics'
+    });
+  }
+};
+
+// Subscribe to newsletter
+exports.subscribeNewsletter = async (req, res, next) => {
+  try {
+    const { email, firstName, lastName } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required'
+      });
+    }
+    
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a valid email address'
+      });
+    }
+    
+    const sanitizedData = {
+      email: validator.normalizeEmail(email.toLowerCase().trim()),
+      firstName: firstName ? validator.escape(firstName.trim()) : '',
+      lastName: lastName ? validator.escape(lastName.trim()) : '',
+      source: 'website', // Fixed - using valid enum value
+      interests: ['newsletter'],
+      isSubscribedToEmails: true
+    };
+    
+    let lead = await Lead.findOne({ email: sanitizedData.email });
+    
+    if (lead) {
+      lead.isSubscribedToEmails = true;
+      lead.emailOptOutDate = null;
+      
+      if (sanitizedData.firstName && !lead.firstName) {
+        lead.firstName = sanitizedData.firstName;
+      }
+      if (sanitizedData.lastName && !lead.lastName) {
+        lead.lastName = sanitizedData.lastName;
+      }
+      
+      if (!lead.interests.includes('newsletter')) {
+        lead.interests.push('newsletter');
+      }
+      
+      await lead.save();
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Successfully subscribed to newsletter!',
+        data: {
+          email: lead.email,
+          isExisting: true
+        }
+      });
+    } else {
+      lead = new Lead(sanitizedData);
+      await lead.save();
+      
+      setImmediate(async () => {
+        try {
+          await emailService.sendLeadWelcome(lead._id);
+        } catch (error) {
+          console.error('Error sending welcome email:', error);
+        }
+      });
+      
+      return res.status(201).json({
+        success: true,
+        message: 'Successfully subscribed to newsletter!',
+        data: {
+          email: lead.email,
+          isExisting: false
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error subscribing to newsletter:', error);
+    
+    if (error.name === 'ValidationError') {
+      // In development, show detailed validation errors
+      const errors = Object.values(error.errors).map(e => e.message);
+      console.error('Validation errors:', errors);
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid input data',
+        ...(process.env.NODE_ENV === 'development' && { errors })
+      });
+    }
+    
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to subscribe to newsletter'
+    });
+  }
+};
+
+// Download guide
+exports.downloadGuide = async (req, res, next) => {
+  try {
+    const { email, firstName, lastName, guideId } = req.body;
+    
+    if (!email || !guideId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and guide ID are required'
+      });
+    }
+    
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a valid email address'
+      });
+    }
+    
+    const sanitizedData = {
+      email: validator.normalizeEmail(email.toLowerCase().trim()),
+      firstName: firstName ? validator.escape(firstName.trim()) : '',
+      lastName: lastName ? validator.escape(lastName.trim()) : '',
+      source: 'free_guide',
+      interests: ['guides', 'educational_content']
+    };
+    
+    let lead = await Lead.findOne({ email: sanitizedData.email });
+    
+    if (lead) {
+      if (sanitizedData.firstName && !lead.firstName) {
+        lead.firstName = sanitizedData.firstName;
+      }
+      if (sanitizedData.lastName && !lead.lastName) {
+        lead.lastName = sanitizedData.lastName;
+      }
+      
+      // Fix: Don't validate guideId as ObjectId, store as string
+      const guideEntry = {
+        guideId: guideId.toString(), // Store as string
+        downloadedAt: new Date()
+      };
+      
+      // Check if guide already downloaded
+      const alreadyDownloaded = lead.downloadedGuides.some(g => 
+        g.guideId && g.guideId.toString() === guideId.toString()
+      );
+      
+      if (!alreadyDownloaded) {
+        lead.downloadedGuides.push(guideEntry);
+      }
+      
+      const newInterests = ['guides', 'educational_content'];
+      newInterests.forEach(interest => {
+        if (!lead.interests.includes(interest)) {
+          lead.interests.push(interest);
+        }
+      });
+      
+      lead.interactions.push({
+        type: 'download',
+        description: `Downloaded guide: ${guideId}`,
+        date: new Date()
+      });
+      
+      await lead.save();
+    } else {
+      // Create new lead with proper guide tracking
+      lead = new Lead({
+        ...sanitizedData,
+        downloadedGuides: [{
+          guideId: guideId.toString(), // Store as string
+          downloadedAt: new Date()
+        }],
+        interactions: [{
+          type: 'download',
+          description: `Downloaded guide: ${guideId}`,
+          date: new Date()
+        }]
+      });
+      
+      await lead.save();
+    }
+    
+    setImmediate(async () => {
+      try {
+        await emailService.sendLeadMagnet(lead._id);
+      } catch (error) {
+        console.error('Error sending lead magnet:', error);
+      }
+    });
+    
+    return res.status(200).json({
+      success: true,
+      message: 'Guide will be sent to your email!',
+      data: {
+        email: lead.email,
+        downloadUrl: `/guides/${guideId}`
+      }
+    });
+  } catch (error) {
+    console.error('Error processing guide download:', error);
+    
+    if (error.name === 'ValidationError') {
+      // In development, show detailed validation errors
+      const errors = Object.values(error.errors).map(e => e.message);
+      console.error('Validation errors:', errors);
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid input data',
+        ...(process.env.NODE_ENV === 'development' && { errors })
+      });
+    }
+    
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to process download request'
+    });
+  }
+};
+
+// Get lead analytics (admin only)
+exports.getLeadAnalytics = async (req, res, next) => {
+  try {
+    const { startDate, endDate, groupBy = 'day' } = req.query;
+    
+    const matchStage = {};
+    if (startDate || endDate) {
+      matchStage.createdAt = {};
+      if (startDate) {
+        const start = new Date(startDate);
+        if (!isNaN(start.getTime())) {
+          matchStage.createdAt.$gte = start;
+        }
+      }
+      if (endDate) {
+        const end = new Date(endDate);
+        if (!isNaN(end.getTime())) {
+          matchStage.createdAt.$lte = end;
+        }
+      }
+    }
+    
+    const overview = await Lead.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: null,
+          totalLeads: { $sum: 1 },
+          convertedLeads: {
+            $sum: { $cond: [{ $ne: ['$convertedToUserId', null] }, 1, 0] }
+          },
+          averageLeadScore: { $avg: '$leadScore' },
+          emailSubscribers: {
+            $sum: { $cond: ['$isSubscribedToEmails', 1, 0] }
+          }
+        }
+      }
+    ]);
+    
+    const bySource = await Lead.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: '$source',
+          count: { $sum: 1 },
+          converted: {
+            $sum: { $cond: [{ $ne: ['$convertedToUserId', null] }, 1, 0] }
+          }
+        }
+      },
+      {
+        $project: {
+          source: '$_id',
+          count: 1,
+          converted: 1,
+          conversionRate: {
+            $multiply: [
+              { $divide: ['$converted', '$count'] },
+              100
+            ]
+          }
+        }
+      },
+      { $sort: { count: -1 } }
+    ]);
+    
+    let dateGrouping;
+    switch (groupBy) {
+      case 'hour':
+        dateGrouping = {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+          day: { $dayOfMonth: '$createdAt' },
+          hour: { $hour: '$createdAt' }
+        };
+        break;
+      case 'day':
+        dateGrouping = {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+          day: { $dayOfMonth: '$createdAt' }
+        };
+        break;
+      case 'week':
+        dateGrouping = {
+          year: { $year: '$createdAt' },
+          week: { $week: '$createdAt' }
+        };
+        break;
+      case 'month':
+        dateGrouping = {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' }
+        };
+        break;
+      default:
+        dateGrouping = {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+          day: { $dayOfMonth: '$createdAt' }
+        };
+    }
+    
+    const timeline = await Lead.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: dateGrouping,
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1 } }
+    ]);
+    
+    const funnel = await Lead.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: '$leadStatus',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    
+    const analytics = {
+      overview: overview[0] || {
+        totalLeads: 0,
+        convertedLeads: 0,
+        averageLeadScore: 0,
+        emailSubscribers: 0
+      },
+      bySource,
+      timeline,
+      funnel: funnel.reduce((acc, item) => {
+        acc[item._id] = item.count;
+        return acc;
+      }, {
+        new: 0,
+        contacted: 0,
+        qualified: 0,
+        converted: 0,
+        lost: 0
+      })
+    };
+    
+    if (analytics.overview.totalLeads > 0) {
+      analytics.overview.conversionRate = 
+        (analytics.overview.convertedLeads / analytics.overview.totalLeads * 100).toFixed(2);
+    } else {
+      analytics.overview.conversionRate = 0;
+    }
+    
+    res.status(200).json({
+      success: true,
+      data: analytics
+    });
+  } catch (error) {
+    console.error('Error fetching lead analytics:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch analytics'
+    });
+  }
+};
+
+// Export leads (admin only)
+exports.exportLeads = async (req, res, next) => {
+  try {
+    const { format = 'json', status, source, startDate, endDate } = req.query;
+    
+    const query = {};
+    
+    if (status) {
+      query.leadStatus = status;
+    }
+    
+    if (source) {
+      query.source = source;
+    }
+    
+    if (startDate || endDate) {
+      query.createdAt = {};
+      if (startDate) {
+        query.createdAt.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        query.createdAt.$lte = new Date(endDate);
+      }
+    }
+    
+    const leads = await Lead.find(query)
+      .select('-__v -interactions')
+      .populate('assignedTo', 'firstName lastName email')
+      .populate('convertedToUserId', 'firstName lastName email')
+      .sort({ createdAt: -1 });
+    
+    if (format === 'csv') {
+      const fields = [
+        'email',
+        'firstName',
+        'lastName',
+        'phone',
+        'source',
+        'leadStatus',
+        'leadScore',
+        'createdAt',
+        'convertedAt',
+        'assignedTo',
+        'notes'
+      ];
+      
+      let csv = fields.join(',') + '\n';
+      
+      leads.forEach(lead => {
+        const row = fields.map(field => {
+          let value = lead[field];
+          
+          if (field === 'assignedTo' && lead.assignedTo) {
+            value = lead.assignedTo.email;
+          }
+          
+          if (value instanceof Date) {
+            value = value.toISOString();
+          }
+          
+          if (value && typeof value === 'string') {
+            value = value.replace(/"/g, '""');
+            if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+              value = `"${value}"`;
+            }
+          }
+          
+          return value || '';
+        });
+        
+        csv += row.join(',') + '\n';
+      });
+      
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename=leads-export.csv');
+      
+      return res.send(csv);
+    } else {
+      res.status(200).json({
+        success: true,
+        count: leads.length,
+        data: leads
+      });
+    }
+  } catch (error) {
+    console.error('Error exporting leads:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to export leads'
     });
   }
 };

@@ -1,0 +1,422 @@
+{
+    "auth": {
+      "login": {
+        "success": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXJfMSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+          "user": {
+            "id": "user_1",
+            "email": "test@example.com",
+            "firstName": "Test",
+            "lastName": "User",
+            "role": "user",
+            "creditScore": 650
+          }
+        },
+        "invalid_credentials": {
+          "error": "Invalid email or password",
+          "code": "AUTH_INVALID_CREDENTIALS"
+        },
+        "account_locked": {
+          "error": "Account has been locked due to multiple failed login attempts",
+          "code": "AUTH_ACCOUNT_LOCKED",
+          "lockDuration": 3600
+        }
+      },
+      "register": {
+        "success": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXJfbmV3IiwiZW1haWwiOiJuZXdAZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTYxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+          "user": {
+            "id": "user_new",
+            "email": "new@example.com",
+            "firstName": "New",
+            "lastName": "User",
+            "role": "user",
+            "creditScore": null
+          }
+        },
+        "email_exists": {
+          "error": "An account with this email already exists",
+          "code": "AUTH_EMAIL_EXISTS"
+        },
+        "weak_password": {
+          "error": "Password must be at least 8 characters long and contain uppercase, lowercase, number and special character",
+          "code": "AUTH_WEAK_PASSWORD"
+        }
+      },
+      "forgot_password": {
+        "success": {
+          "message": "Password reset instructions sent to your email",
+          "resetToken": "mock_reset_token_123456"
+        },
+        "user_not_found": {
+          "error": "No account found with this email address",
+          "code": "AUTH_USER_NOT_FOUND"
+        }
+      },
+      "reset_password": {
+        "success": {
+          "message": "Password has been reset successfully",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.new_token"
+        },
+        "invalid_token": {
+          "error": "Invalid or expired reset token",
+          "code": "AUTH_INVALID_TOKEN"
+        }
+      }
+    },
+    "products": {
+      "list": {
+        "success": {
+          "data": [],
+          "pagination": {
+            "page": 1,
+            "pages": 5,
+            "total": 48,
+            "limit": 10
+          }
+        },
+        "empty": {
+          "data": [],
+          "pagination": {
+            "page": 1,
+            "pages": 0,
+            "total": 0,
+            "limit": 10
+          }
+        }
+      },
+      "single": {
+        "success": {
+          "data": {
+            "_id": "prod_1",
+            "type": "ebook",
+            "title": "Credit Repair Master Guide",
+            "price": 49.99,
+            "status": "published"
+          }
+        },
+        "not_found": {
+          "error": "Product not found",
+          "code": "PRODUCT_NOT_FOUND"
+        }
+      }
+    },
+    "orders": {
+      "create": {
+        "success": {
+          "_id": "order_123456",
+          "orderNumber": "CGA-54321",
+          "status": "completed",
+          "totalAmount": 49.99,
+          "paymentStatus": "paid",
+          "items": [],
+          "createdAt": "2024-01-15T10:00:00Z"
+        },
+        "payment_failed": {
+          "error": "Payment was declined",
+          "code": "PAYMENT_DECLINED",
+          "declineCode": "insufficient_funds"
+        },
+        "out_of_stock": {
+          "error": "One or more items are out of stock",
+          "code": "OUT_OF_STOCK",
+          "items": ["prod_3"]
+        }
+      },
+      "list": {
+        "success": {
+          "data": [],
+          "pagination": {
+            "page": 1,
+            "pages": 2,
+            "total": 15
+          }
+        }
+      }
+    },
+    "bookings": {
+      "create": {
+        "success": {
+          "booking": {
+            "_id": "book_123456",
+            "serviceId": "serv_1",
+            "startTime": "2024-02-01T14:00:00Z",
+            "endTime": "2024-02-01T15:00:00Z",
+            "status": "confirmed"
+          },
+          "message": "Booking confirmed. You will receive a confirmation email shortly."
+        },
+        "slot_unavailable": {
+          "error": "This time slot is no longer available",
+          "code": "SLOT_UNAVAILABLE",
+          "availableSlots": []
+        },
+        "too_many_bookings": {
+          "error": "You have reached the maximum number of bookings for this period",
+          "code": "BOOKING_LIMIT_EXCEEDED",
+          "limit": 5,
+          "period": "month"
+        }
+      },
+      "available_slots": {
+        "success": {
+          "availableSlots": [
+            {
+              "startTime": "2024-02-01T09:00:00Z",
+              "endTime": "2024-02-01T10:00:00Z",
+              "available": true
+            },
+            {
+              "startTime": "2024-02-01T10:00:00Z",
+              "endTime": "2024-02-01T11:00:00Z",
+              "available": true
+            },
+            {
+              "startTime": "2024-02-01T14:00:00Z",
+              "endTime": "2024-02-01T15:00:00Z",
+              "available": true
+            }
+          ],
+          "timezone": "America/New_York"
+        }
+      },
+      "cancel": {
+        "success": {
+          "message": "Booking cancelled successfully",
+          "refundAmount": 149.00,
+          "refundStatus": "processing"
+        },
+        "too_late": {
+          "error": "Cannot cancel booking less than 24 hours before scheduled time",
+          "code": "CANCELLATION_DEADLINE_PASSED",
+          "cancellationDeadline": "2024-01-31T14:00:00Z"
+        }
+      }
+    },
+    "cart": {
+      "add": {
+        "success": {
+          "data": {
+            "items": [
+              {
+                "productId": "prod_1",
+                "quantity": 1,
+                "type": "ebook",
+                "price": 49.99,
+                "title": "Credit Repair Master Guide"
+              }
+            ],
+            "subtotal": 49.99,
+            "itemCount": 1
+          },
+          "message": "Item added to cart"
+        },
+        "invalid_quantity": {
+          "error": "Invalid quantity. Must be between 1 and 10",
+          "code": "INVALID_QUANTITY"
+        }
+      },
+      "update": {
+        "success": {
+          "data": {
+            "items": [],
+            "subtotal": 0,
+            "itemCount": 0
+          }
+        }
+      },
+      "remove": {
+        "success": {
+          "message": "Item removed from cart",
+          "data": {
+            "items": [],
+            "subtotal": 0
+          }
+        }
+      }
+    },
+    "community": {
+      "discussions": {
+        "list": {
+          "success": {
+            "data": {
+              "discussions": [],
+              "pagination": {
+                "page": 1,
+                "pages": 10,
+                "total": 95
+              }
+            }
+          }
+        },
+        "create": {
+          "success": {
+            "_id": "disc_123456",
+            "title": "New Discussion",
+            "author": "user_1",
+            "category": "general",
+            "createdAt": "2024-01-15T10:00:00Z"
+          },
+          "rate_limited": {
+            "error": "You can only create 3 discussions per day",
+            "code": "RATE_LIMIT_EXCEEDED",
+            "retryAfter": 3600
+          }
+        }
+      },
+      "posts": {
+        "create": {
+          "success": {
+            "data": {
+              "_id": "post_123456",
+              "content": "This is a reply",
+              "author": "user_1",
+              "likes": 0,
+              "createdAt": "2024-01-15T10:30:00Z"
+            }
+          },
+          "discussion_locked": {
+            "error": "This discussion has been locked",
+            "code": "DISCUSSION_LOCKED"
+          }
+        },
+        "like": {
+          "success": {
+            "data": {
+              "liked": true,
+              "likeCount": 15
+            }
+          },
+          "already_liked": {
+            "data": {
+              "liked": false,
+              "likeCount": 14
+            }
+          }
+        }
+      }
+    },
+    "leads": {
+      "capture": {
+        "success": {
+          "_id": "lead_123456",
+          "message": "Thank you! Check your email for your free guide.",
+          "emailSent": true
+        },
+        "already_subscribed": {
+          "message": "You're already subscribed! Check your email for the download link.",
+          "emailSent": true
+        },
+        "invalid_email": {
+          "error": "Please provide a valid email address",
+          "code": "INVALID_EMAIL"
+        }
+      }
+    },
+    "payments": {
+      "stripe": {
+        "payment_intent": {
+          "success": {
+            "clientSecret": "pi_1234567890_secret_abcdef",
+            "amount": 4999,
+            "currency": "usd",
+            "status": "requires_payment_method"
+          }
+        },
+        "payment_method": {
+          "success": {
+            "id": "pm_1234567890",
+            "type": "card",
+            "card": {
+              "brand": "visa",
+              "last4": "4242",
+              "exp_month": 12,
+              "exp_year": 2025
+            }
+          }
+        },
+        "webhook": {
+          "payment_succeeded": {
+            "type": "payment_intent.succeeded",
+            "data": {
+              "object": {
+                "id": "pi_1234567890",
+                "amount": 4999,
+                "metadata": {
+                  "orderId": "order_123456"
+                }
+              }
+            }
+          }
+        }
+      },
+      "refund": {
+        "success": {
+          "refundId": "refund_123456",
+          "amount": 49.99,
+          "status": "succeeded",
+          "reason": "requested_by_customer"
+        },
+        "partial_refund": {
+          "refundId": "refund_123457",
+          "amount": 25.00,
+          "originalAmount": 49.99,
+          "status": "succeeded",
+          "type": "partial"
+        }
+      }
+    },
+    "errors": {
+      "400": {
+        "error": "Bad Request",
+        "message": "Invalid request parameters"
+      },
+      "401": {
+        "error": "Unauthorized",
+        "message": "Authentication required"
+      },
+      "403": {
+        "error": "Forbidden",
+        "message": "You don't have permission to access this resource"
+      },
+      "404": {
+        "error": "Not Found",
+        "message": "Resource not found"
+      },
+      "429": {
+        "error": "Too Many Requests",
+        "message": "Rate limit exceeded. Please try again later.",
+        "retryAfter": 60
+      },
+      "500": {
+        "error": "Internal Server Error",
+        "message": "An unexpected error occurred. Please try again later."
+      },
+      "503": {
+        "error": "Service Unavailable",
+        "message": "The service is temporarily unavailable. Please try again later."
+      }
+    },
+    "health": {
+      "success": {
+        "status": "ok",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "services": {
+          "database": "connected",
+          "redis": "connected",
+          "stripe": "operational",
+          "sendgrid": "operational"
+        }
+      },
+      "degraded": {
+        "status": "degraded",
+        "timestamp": "2024-01-15T10:00:00Z",
+        "services": {
+          "database": "connected",
+          "redis": "connected",
+          "stripe": "operational",
+          "sendgrid": "error"
+        }
+      }
+    }
+  }

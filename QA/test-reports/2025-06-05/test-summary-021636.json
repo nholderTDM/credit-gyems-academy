@@ -1,0 +1,25 @@
+{
+  "Environment": "local",
+  "Summary": {
+    "Duration": "00:01:54",
+    "TotalSkipped": 0,
+    "TotalFailed": 3,
+    "TotalPassed": 0
+  },
+  "Results": {
+    "API Tests": {
+      "Error": "The expression after '&' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.",
+      "Success": false
+    },
+    "Edge Case Tests (Quick)": {
+      "Error": "The expression after '&' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.",
+      "Success": false
+    },
+    "GUI Tests": {
+      "Error": "The expression after '&' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.",
+      "Success": false
+    }
+  },
+  "StartTime": "2025-06-05T02:14:42.1940763-04:00",
+  "TestMode": "Standard"
+}

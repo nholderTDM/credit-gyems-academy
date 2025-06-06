@@ -1,0 +1,305 @@
+[
+    {
+      "_id": "prod_ebook_1",
+      "type": "ebook",
+      "title": "Credit Repair Master Guide",
+      "slug": "credit-repair-master-guide",
+      "description": "The comprehensive guide to understanding and repairing your credit. This 200-page ebook covers everything from understanding credit reports to advanced dispute strategies.",
+      "price": 49.99,
+      "compareAtPrice": 99.99,
+      "shortDescription": "Complete guide to transform your credit score",
+      "features": [
+        "200+ Pages of Expert Content",
+        "Dispute Letter Templates",
+        "Credit Building Strategies",
+        "Bonus Worksheets",
+        "Lifetime Updates"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x800/FFD700/333333?text=Credit+Guide",
+      "images": [
+        "https://placehold.co/600x800/FFD700/333333?text=Credit+Guide",
+        "https://placehold.co/600x800/FFD700/333333?text=Chapter+Preview",
+        "https://placehold.co/600x800/FFD700/333333?text=Worksheets"
+      ],
+      "category": "credit-repair",
+      "tags": ["bestseller", "ebook", "comprehensive"],
+      "downloadUrl": "/downloads/credit-repair-master-guide.pdf",
+      "fileSize": "15 MB",
+      "pageCount": 200,
+      "format": "PDF",
+      "metadata": {
+        "author": "Coach Tae",
+        "isbn": "978-1234567890",
+        "publishedDate": "2023-06-01",
+        "lastUpdated": "2024-01-01",
+        "version": "3.0"
+      },
+      "seo": {
+        "metaTitle": "Credit Repair Master Guide - Transform Your Credit Score",
+        "metaDescription": "Learn proven strategies to repair your credit and achieve financial freedom with Coach Tae's comprehensive guide."
+      },
+      "reviews": {
+        "average": 4.9,
+        "count": 342
+      },
+      "sales": {
+        "count": 1250,
+        "badge": "Best Seller"
+      }
+    },
+    {
+      "_id": "prod_course_1",
+      "type": "course",
+      "title": "30-Day Credit Transformation Course",
+      "slug": "30-day-credit-transformation",
+      "description": "Transform your credit score in just 30 days with our intensive online course. Includes video lessons, live Q&A sessions, and personalized action plans.",
+      "price": 299.99,
+      "compareAtPrice": 599.99,
+      "shortDescription": "Intensive 30-day program to boost your credit score",
+      "features": [
+        "15 Video Modules",
+        "Weekly Live Q&A Sessions",
+        "Personal Action Plan",
+        "Private Community Access",
+        "1-on-1 Coaching Call",
+        "Certificate of Completion"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x400/4169E1/FFFFFF?text=30-Day+Course",
+      "category": "courses",
+      "tags": ["popular", "transformation", "coaching"],
+      "modules": 15,
+      "duration": "30 days",
+      "enrollmentCount": 845,
+      "rating": 4.8,
+      "reviews": {
+        "average": 4.8,
+        "count": 156
+      },
+      "curriculum": [
+        {
+          "week": 1,
+          "title": "Foundation Week",
+          "modules": ["Understanding Credit", "Reading Reports", "Identifying Issues"]
+        },
+        {
+          "week": 2,
+          "title": "Dispute Week",
+          "modules": ["Dispute Strategies", "Writing Letters", "Bureau Communication"]
+        },
+        {
+          "week": 3,
+          "title": "Building Week",
+          "modules": ["New Accounts", "Credit Mix", "Utilization Management"]
+        },
+        {
+          "week": 4,
+          "title": "Optimization Week",
+          "modules": ["Advanced Strategies", "Score Maximization", "Long-term Planning"]
+        }
+      ],
+      "instructor": {
+        "name": "Coach Tae",
+        "title": "Credit Expert & Founder",
+        "image": "https://placehold.co/200x200/FFD700/333333?text=Coach+Tae"
+      },
+      "access": {
+        "type": "lifetime",
+        "supportDuration": "90 days"
+      }
+    },
+    {
+      "_id": "prod_physical_1",
+      "type": "physical",
+      "title": "Credit Repair Workbook & Planner",
+      "slug": "credit-repair-workbook-planner",
+      "description": "Physical workbook and planner designed to guide you through your credit repair journey. Includes worksheets, tracking pages, and monthly planning sections.",
+      "price": 39.99,
+      "compareAtPrice": 59.99,
+      "shortDescription": "Physical workbook for hands-on credit repair",
+      "features": [
+        "150 Page Spiral-Bound Workbook",
+        "Monthly Planning Sections",
+        "Progress Tracking Pages",
+        "Dispute Letter Templates",
+        "Free Shipping"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x600/32CD32/FFFFFF?text=Workbook",
+      "category": "physical-products",
+      "tags": ["workbook", "planner", "physical"],
+      "inventory": 45,
+      "trackInventory": true,
+      "weight": "1.2 lbs",
+      "dimensions": {
+        "length": 11,
+        "width": 8.5,
+        "height": 1
+      },
+      "shippingClass": "standard",
+      "shippingInfo": {
+        "freeShipping": true,
+        "estimatedDays": "3-5 business days",
+        "carriers": ["USPS", "UPS"]
+      },
+      "variants": [
+        {
+          "id": "var_1",
+          "title": "Blue Cover",
+          "price": 39.99,
+          "inventory": 20,
+          "sku": "CRW-BLUE-001"
+        },
+        {
+          "id": "var_2",
+          "title": "Gold Cover",
+          "price": 39.99,
+          "inventory": 25,
+          "sku": "CRW-GOLD-001"
+        }
+      ]
+    },
+    {
+      "_id": "prod_bundle_1",
+      "type": "bundle",
+      "title": "Complete Credit Transformation Bundle",
+      "slug": "complete-credit-bundle",
+      "description": "Everything you need for complete credit transformation. Includes our best-selling ebook, 30-day course access, and physical workbook.",
+      "price": 349.99,
+      "compareAtPrice": 589.97,
+      "shortDescription": "Best value - complete credit repair system",
+      "features": [
+        "Credit Repair Master Guide (Ebook)",
+        "30-Day Transformation Course",
+        "Physical Workbook & Planner",
+        "Bonus: 1-on-1 Coaching Session",
+        "VIP Community Access"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x600/FFD700/333333?text=Bundle+Deal",
+      "category": "bundles",
+      "tags": ["bundle", "best-value", "complete-system"],
+      "bundleItems": [
+        {
+          "productId": "prod_ebook_1",
+          "title": "Credit Repair Master Guide",
+          "regularPrice": 49.99
+        },
+        {
+          "productId": "prod_course_1",
+          "title": "30-Day Credit Transformation Course",
+          "regularPrice": 299.99
+        },
+        {
+          "productId": "prod_physical_1",
+          "title": "Credit Repair Workbook & Planner",
+          "regularPrice": 39.99
+        }
+      ],
+      "savings": {
+        "amount": 239.98,
+        "percentage": 41
+      },
+      "bonuses": [
+        "1-on-1 Coaching Session ($199 value)",
+        "VIP Community Access ($99/year value)"
+      ]
+    },
+    {
+      "_id": "prod_ebook_2",
+      "type": "ebook",
+      "title": "DIY Dispute Letter Templates",
+      "slug": "diy-dispute-templates",
+      "description": "Ready-to-use dispute letter templates for all major credit situations. Includes 50+ templates with fill-in-the-blank sections.",
+      "price": 29.99,
+      "shortDescription": "50+ proven dispute letter templates",
+      "features": [
+        "50+ Letter Templates",
+        "Bureau-Specific Formats",
+        "Legal Citations Included",
+        "Update Notifications",
+        "Email Support"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x800/4169E1/FFFFFF?text=Dispute+Templates",
+      "category": "credit-repair",
+      "tags": ["templates", "disputes", "diy"],
+      "downloadUrl": "/downloads/dispute-templates.pdf",
+      "fileSize": "5 MB",
+      "pageCount": 75,
+      "format": "PDF"
+    },
+    {
+      "_id": "prod_mini_course",
+      "type": "course",
+      "title": "Credit Basics Mini-Course",
+      "slug": "credit-basics-mini",
+      "description": "Perfect for beginners. Learn credit fundamentals in this self-paced mini-course.",
+      "price": 47.00,
+      "shortDescription": "Credit fundamentals for beginners",
+      "features": [
+        "5 Video Lessons",
+        "Downloadable Guides",
+        "Quiz & Certificate",
+        "30-Day Access"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x400/32CD32/FFFFFF?text=Mini+Course",
+      "category": "courses",
+      "tags": ["beginner", "mini-course", "fundamentals"],
+      "modules": 5,
+      "duration": "2 hours",
+      "access": {
+        "type": "limited",
+        "days": 30
+      }
+    },
+    {
+      "_id": "prod_free_guide",
+      "type": "ebook",
+      "title": "Free Credit Score Improvement Checklist",
+      "slug": "free-credit-checklist",
+      "description": "Start your credit journey with our free checklist. Perfect introduction to credit repair basics.",
+      "price": 0,
+      "shortDescription": "Free checklist to start improving your credit",
+      "features": [
+        "10-Point Checklist",
+        "Action Steps",
+        "Resource Links"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x800/90EE90/333333?text=Free+Guide",
+      "category": "free-resources",
+      "tags": ["free", "checklist", "beginner"],
+      "downloadUrl": "/downloads/free-checklist.pdf",
+      "pageCount": 10,
+      "format": "PDF",
+      "leadMagnet": true
+    },
+    {
+      "_id": "prod_limited_physical",
+      "type": "physical",
+      "title": "Limited Edition Success Kit",
+      "slug": "limited-success-kit",
+      "description": "Exclusive kit with premium materials for serious credit transformation students.",
+      "price": 199.99,
+      "compareAtPrice": 299.99,
+      "shortDescription": "Premium kit - limited quantity available",
+      "features": [
+        "Premium Leather Planner",
+        "Gold-Plated Pen Set",
+        "Success Certificates",
+        "Exclusive Content USB",
+        "VIP Support Card"
+      ],
+      "status": "published",
+      "image": "https://placehold.co/600x600/FFD700/333333?text=Limited+Edition",
+      "category": "physical-products",
+      "tags": ["limited-edition", "premium", "exclusive"],
+      "inventory": 5,
+      "trackInventory": true,
+      "limitPerCustomer": 1,
+      "badge": "Limited Edition"
+    }
+  ]

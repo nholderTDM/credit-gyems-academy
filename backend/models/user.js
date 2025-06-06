@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -10,19 +11,41 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    lowercase: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: function() {
+      // Password is required if firebaseUid starts with 'local_'
+      return this.firebaseUid && this.firebaseUid.startsWith('local_');
+    },
+    select: false // Don't include password in queries by default
   },
   firstName: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
-  phone: String,
-  creditScore: Number,
-  targetCreditScore: Number,
+  phone: {
+    type: String,
+    trim: true
+  },
+  creditScore: {
+    type: Number,
+    min: 300,
+    max: 850
+  },
+  targetCreditScore: {
+    type: Number,
+    min: 300,
+    max: 850
+  },
   creditGoals: [String],
   membershipStatus: {
     type: String,
@@ -61,6 +84,8 @@ const UserSchema = new Schema({
     campaign: String
   },
   stripeCustomerId: String,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
   createdAt: {
     type: Date,
     default: Date.now
@@ -76,10 +101,37 @@ const UserSchema = new Schema({
   }
 });
 
-// Update the 'updatedAt' field on save
-UserSchema.pre('save', function(next) {
+// Hash password before saving
+UserSchema.pre('save', async function(next) {
+  // Update timestamp
   this.updatedAt = Date.now();
-  next();
+  
+  // Only hash password if it's modified and exists
+  if (!this.isModified('password') || !this.password) {
+    return next();
+  }
+  
+  try {
+    // Hash password with bcrypt
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
+
+// Method to compare passwords
+UserSchema.methods.comparePassword = async function(candidatePassword) {
+  if (!this.password) {
+    return false;
+  }
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Method to check if user has Firebase auth
+UserSchema.methods.hasFirebaseAuth = function() {
+  return this.firebaseUid && !this.firebaseUid.startsWith('local_');
+};
 
 module.exports = mongoose.model('User', UserSchema);

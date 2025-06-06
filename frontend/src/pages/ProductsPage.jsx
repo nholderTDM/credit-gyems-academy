@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { useCart } from '../context/CartContext';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import { useCart } from '../contexts/CartContext';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);

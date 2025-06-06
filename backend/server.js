@@ -1,171 +1,312 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const morgan = require('morgan');
+const mongoose = require('mongoose');
+const session = require('express-session');
 
-// Load environment variables
+// Load environment variables FIRST
 dotenv.config();
 
-console.log('🚀 Starting Credit Gyems Academy API...');
-console.log('📦 Express version:', require('express/package.json').version);
+console.log('🚀 Starting Credit Gyems Academy Backend Server...');
 
-// Initialize Express app
-const app = express();
+// Skip Firebase Admin SDK - using REST API instead
+console.log('⚠️  Using Firebase REST API for authentication (no Admin SDK)');
 
-// Development logging
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
-
-// Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    },
-  },
-}));
-
-// Rate limiting
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 15 * 60 * 1000,
-  message: {
-    success: false,
-    message: 'Too many requests from this IP, please try again after 15 minutes'
-  },
-  standardHeaders: true,
-  legacyHeaders: false
-});
-app.use('/api', limiter);
-
-// Body parser
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-
-// Data sanitization
-app.use(mongoSanitize());
-app.use(xss());
-
-// CORS
-const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      process.env.FRONTEND_URL,
-      'http://localhost:3000',
-      'https://localhost:3000',
-      'http://127.0.0.1:3000'
-    ];
-    
-    // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(null, true); // Allow all origins in development
-    }
-  },
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
+// MongoDB connection with improved options
+// Load optimized MongoDB options
+const mongoOptions = require('./fix-mongo-pool');
 
 // Connect to MongoDB
-if (process.env.MONGODB_URI) {
-  mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('✅ Connected to MongoDB'))
+mongoose.connect(process.env.MONGODB_URI, mongoOptions)
+  .then(() => console.log('✅ MongoDB connected successfully'))
   .catch(err => {
-    console.error('❌ MongoDB connection error:', err.message);
-    console.log('⚠️  Server will continue without database connection');
+    console.error('❌ MongoDB connection failed:', err.message);
+    process.exit(1);
   });
-} else {
-  console.log('⚠️  No MONGODB_URI found, running without database');
-}
 
-// Routes
-console.log('📍 Loading routes...');
-try {
-  const routes = require('./routes');
-  app.use('/api', routes);
-  console.log('✅ Routes loaded successfully');
-} catch (error) {
-  console.error('❌ Error loading routes:', error.message);
+// Validate required environment variables
+const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+  console.error('❌ Missing required environment variables:');
+  missingEnvVars.forEach(envVar => {
+    console.error(`   - ${envVar}`);
+  });
+  console.error('🔧 Please check your .env file in the backend folder');
   process.exit(1);
 }
 
-// Root route
-app.get('/', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'Credit Gyems Academy API is running',
-    version: '1.0.0',
-    express: require('express/package.json').version
-  });
-});
+console.log('✅ Environment variables loaded successfully');
 
-// Health check
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Trust proxy for ngrok/production
+app.set('trust proxy', 1);
+
+// CORS configuration
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'http://localhost:3000',
+  'https://*.ngrok-free.app',
+  'https://*.ngrok.io'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);  
+    
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (allowedOrigin.includes('*')) {
+        const pattern = allowedOrigin.replace('*', '.*');
+        return new RegExp(pattern).test(origin);
+      }
+      return allowedOrigin === origin;
+    });
+    
+    callback(null, true); // Allow all for development
+  },
+  credentials: true
+}));
+
+// Body parser middleware
+// CRITICAL: Webhook route MUST use raw body BEFORE other middleware
+app.use('/api/orders/webhook', express.raw({ type: 'application/json' }));
+
+// Add session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false,
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
+
+// Regular JSON middleware for other routes
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Import Stripe
+let stripe;
+try {
+  stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+  console.log('✅ Stripe initialized successfully');
+} catch (error) {
+  console.error('❌ Failed to initialize Stripe:', error.message);
+}
+
+// Health check endpoint (before routes)
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    environment: process.env.NODE_ENV || 'development',
+    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    stripe: stripe ? 'configured' : 'not configured',
+    firebase: 'REST API mode'
   });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.message);
-  console.error('Stack:', err.stack);
-  
-  res.status(err.statusCode || 500).json({
-    success: false,
-    message: err.message || 'Internal server error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+// Database health check endpoint
+app.get('/api/health/db', async (req, res) => {
+  try {
+    const dbStatus = mongoose.connection.readyState;
+    const dbStates = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+    
+    let canQuery = false;
+    if (dbStatus === 1) {
+      try {
+        await mongoose.connection.db.admin().ping();
+        canQuery = true;
+      } catch (err) {
+        console.error('DB ping failed:', err);
+      }
+    }
+    
+    res.status(200).json({
+      success: true,
+      database: {
+        status: dbStates[dbStatus],
+        statusCode: dbStatus,
+        canQuery: canQuery,
+        host: mongoose.connection.host,
+        name: mongoose.connection.name
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('DB health check error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      database: {
+        status: 'error',
+        statusCode: mongoose.connection.readyState
+      }
+    });
+  }
+});
+
+// Import and use routes - ONLY ONCE
+const routes = require('./routes');
+app.use('/api', routes);
+console.log('✅ Routes loaded successfully');
+
+// Webhook endpoint for Stripe
+app.post('/api/orders/webhook', async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+    
+    console.log(`✅ Webhook verified: ${event.type}`);
+    res.json({ received: true });
+  } catch (err) {
+    console.error(`❌ Webhook error: ${err.message}`);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+});
+
+// Webhook test endpoint
+app.get('/api/webhook-test', (req, res) => {
+  res.status(200).json({
+    message: 'Webhook endpoint is accessible',
+    webhook_url: '/api/orders/webhook',
+    method: 'POST',
+    timestamp: new Date().toISOString()
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
+// Routes info endpoint
+app.get('/api/routes', (req, res) => {
+  const routes = [];
+  app._router.stack.forEach(middleware => {
+    if (middleware.route) {
+      routes.push({
+        method: Object.keys(middleware.route.methods)[0].toUpperCase(),
+        path: middleware.route.path
+      });
+    } else if (middleware.name === 'router') {
+      middleware.handle.stack.forEach(handler => {
+        if (handler.route) {
+          const path = middleware.regexp.source.match(/\\\/([^\\]+)/);
+          routes.push({
+            method: Object.keys(handler.route.methods)[0].toUpperCase(),
+            path: `/${path ? path[1] : ''}${handler.route.path}`
+          });
+        }
+      });
+    }
+  });
+  res.json({ routes });
+});
+
+// 404 handler for undefined routes
+app.use('/api/*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`
+    message: `Route ${req.method} ${req.originalUrl} not found`
   });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('💥 Global error:', err);
+  
+  if (err.type === 'entity.too.large' || 
+      err.message === 'request entity too large' ||
+      (err.status === 413)) {
+    return res.status(413).json({
+      success: false,
+      message: 'Internal server error',
+      error: 'request entity too large'
+    });
+  }
+  
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid JSON',
+      error: 'Malformed JSON in request body'
+    });
+  }
+  
+  const status = err.status || 500;
+  res.status(status).json({ 
+    success: false, 
+    message: 'Internal server error',
+    error: err.message || 'Something went wrong'
+  });
+});
+
+// Start server with keep-alive settings
 const server = app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📧 SendGrid configured: ${!!process.env.SENDGRID_API_KEY}`);
-  console.log(`🔗 API available at: http://localhost:${PORT}/api`);
-  console.log(`🏥 Health check: http://localhost:${PORT}/health`);
+  console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`🔗 API Base: http://localhost:${PORT}/api`);
+  console.log(`💾 MongoDB: ${mongoose.connection.readyState === 1 ? 'Connected' : 'Connecting...'}`);
+  console.log(`🔐 Auth: Firebase REST API + MongoDB`);
+  
+  // Set keep-alive to prevent connection drops
+  server.keepAliveTimeout = 120000; // 2 minutes
+  server.headersTimeout = 120000;   // 2 minutes
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  server.close(() => {
-    console.log('Process terminated');
-  });
-});
-
-process.on('unhandledRejection', (err, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', err);
-  server.close(() => {
+// Handle server errors
+server.on('error', (error) => {
+  console.error('Server error:', error);
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use`);
     process.exit(1);
+  }
+});
+
+// Handle process termination gracefully
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, closing server gracefully');
+  server.close(() => {
+    mongoose.connection.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
   });
 });
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, closing server gracefully');
+  server.close(() => {
+    mongoose.connection.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  });
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err, promise) => {
+  console.error('💥 Unhandled Promise Rejection:', err);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('💥 Uncaught Exception:', err);
+  console.error('🔧 Check your environment variables and dependencies');
+  process.exit(1);
+});
+
+module.exports = app;

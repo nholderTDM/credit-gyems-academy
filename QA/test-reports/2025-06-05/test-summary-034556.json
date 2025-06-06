@@ -1,0 +1,17 @@
+{
+  "TestMode": "Quick",
+  "Results": {
+    "API Tests (Quick)": {
+      "Error": "The Export-ModuleMember cmdlet can only be called from inside a module.",
+      "Success": false
+    }
+  },
+  "Summary": {
+    "TotalSkipped": 0,
+    "TotalFailed": 1,
+    "TotalPassed": 0,
+    "Duration": "00:00:08"
+  },
+  "StartTime": "2025-06-05T03:45:47.9549979-04:00",
+  "Environment": "local"
+}

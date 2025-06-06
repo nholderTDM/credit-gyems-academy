@@ -1,0 +1,17 @@
+{
+  "TestMode": "Production",
+  "OptionalFeatures": {
+    "GoogleCalendarSync": {
+      "Reason": "Requires Google OAuth setup",
+      "Enabled": false
+    },
+    "RateLimiting": {
+      "Reason": "Optional security feature",
+      "Enabled": false
+    }
+  },
+  "Thresholds": {
+    "RateLimitRequests": 100,
+    "TimeWaitWarning": 100
+  }
+}

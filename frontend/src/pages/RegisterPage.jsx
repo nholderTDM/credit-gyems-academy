@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { useAuth } from '../contexts/AuthContext';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({

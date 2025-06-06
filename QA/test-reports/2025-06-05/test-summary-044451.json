@@ -1,0 +1,17 @@
+{
+  "TestMode": "Quick",
+  "Results": {
+    "API Tests (Quick)": {
+      "Error": "Cannot bind argument to parameter 'Path' because it is an empty string.",
+      "Success": false
+    }
+  },
+  "Summary": {
+    "TotalSkipped": 0,
+    "TotalFailed": 1,
+    "TotalPassed": 0,
+    "Duration": "00:00:27"
+  },
+  "StartTime": "2025-06-05T04:44:23.728307-04:00",
+  "Environment": "local"
+}

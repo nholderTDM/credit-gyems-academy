@@ -1,0 +1,517 @@
+CREDIT GYEMS ACADEMY PROJECT STRUCTURE
+==================================================
+Generated on: 2025-06-05 01:25:20
+==================================================
+
+PROJECT STATISTICS:
+--------------------
+Total Folders: 66
+Total Files: 374
+
+FILE TYPES:
+--------------------
+.js: 114 files
+.ps1: 105 files
+.jsx: 68 files
+.html: 39 files
+.json: 17 files
+.png: 7 files
+.gitignore: 3 files
+.env: 3 files
+.jpg: 3 files
+.svg: 2 files
+.md: 2 files
+.pdf: 2 files
+.css: 2 files
+.development: 1 files
+.production: 1 files
+.rules: 1 files
+.firebaserc: 1 files
+.bat: 1 files
+.txt: 1 files
+.yml: 1 files
+
+LARGEST FILES:
+--------------------
+0.44 MB - D:\credit-gyems-academy\frontend\src\assets\images\dortae-freemanjpg
+0.42 MB - D:\credit-gyems-academy\frontend\public\products\cga-credit-profile-coaching-guide\cga-cpcg-2png
+0.41 MB - D:\credit-gyems-academy\frontend\src\assets\images\credit-guidejpg
+0.40 MB - D:\credit-gyems-academy\frontend\public\hero\hero-imagejpg
+0.37 MB - D:\credit-gyems-academy\frontend\public\products\cga-credit-profile-coaching-guide\cga-cpcg-4png
+0.37 MB - D:\credit-gyems-academy\frontend\public\products\cga-credit-profile-coaching-guide\cga-cpcg-3png
+0.35 MB - D:\credit-gyems-academy\frontend\public\products\cga-credit-profile-coaching-guide\cga-cpcg-5png
+0.25 MB - D:\credit-gyems-academy\QA\test-reports\TESTING GUIDE - Comprehensive Testing Documentationpdf
+0.23 MB - D:\credit-gyems-academy\frontend\public\products\cga-credit-profile-coaching-guide\cga-cpcg-1png
+0.22 MB - D:\credit-gyems-academy\package-lockjson
+
+EXCLUDED FOLDERS:
+--------------------
+- node_modules
+- .git
+- dist
+- build
+- .next
+- .nuxt
+- coverage
+- .cache
+- temp
+- tmp
+- .vscode
+- .idea
+- out
+- .turbo
+- .vercel
+- .netlify
+- logs
+- *.log
+- __pycache__
+- .pytest_cache
+- venv
+- .venv
+- vendor
+
+==================================================
+
+DIRECTORY STRUCTURE:
+
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+└── qa-tests.yml
+credit-gyems-academy/
+credit-gyems-academy/
+└── firebase.js
+credit-gyems-academy/
+├── authController.js
+├── bookingController.js
+├── communityController.js
+├── consultationController.js
+├── contactController.js
+├── leadController.js
+├── orderController.js
+├── productController.js
+└── serviceController.js
+credit-gyems-academy/
+└── emailScheduler.js
+credit-gyems-academy/
+├── authMiddleware.js
+└── security.js
+credit-gyems-academy/
+├── booking.js
+├── consultation.js
+├── discount.js
+├── discussion.js
+├── ebookDownload.js
+├── lead.js
+├── like.js
+├── order.js
+├── post.js
+├── product.js
+├── service.js
+└── user.js
+credit-gyems-academy/
+├── authRoutes.js
+├── bookingRoutes.js
+├── cartRoutes.js
+├── communityRoutes.js
+├── contactRoutes.js
+├── index.js
+├── leadRoutes.js
+├── orderRoutes.js
+├── productRoutes.js
+├── serviceRoutes.js
+├── setupRoutes.js
+└── uploadRoutes.js
+credit-gyems-academy/
+├── analytics.js
+├── calendarService.js
+├── discountService.js
+├── ebookService.js
+├── emailService.js
+├── firebaseAuth.js
+├── firebaseCLIAdapter.js
+├── paymentService.js
+└── storageService.js
+credit-gyems-academy/
+└── api.js
+├── .env
+├── .gitignore
+├── check-middleware.js
+├── check-product-model.js
+├── crash-prevent.js
+├── debug-auth-roles.js
+├── debug-check.js
+├── debug-env.js
+├── debug-route-loading.js
+├── debug-routes.js
+├── diagnose-server-crashes.js
+├── fix-admin-services.js
+├── fix-community-test.js
+├── fix-mongo-pool.js
+├── fresh-sendgrid-test.js
+├── generate-jwt-secret.js
+├── package-lock.json
+├── package.json
+├── promote-to-admin.js
+├── server-config-fix.js
+├── server.js
+├── simple-env-check.js
+├── start-visible.bat
+├── test-auth-middleware.js
+├── test-email-new.js
+├── test-server.js
+├── test-services.js
+├── Update-ProductTestData.ps1
+├── update-server-routes.js
+├── verify-routes.js
+└── verify-services.js
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+└── hero-image.jpg
+credit-gyems-academy/
+credit-gyems-academy/
+├── cga-cpcg-1.png
+├── cga-cpcg-2.png
+├── cga-cpcg-3.png
+├── cga-cpcg-4.png
+├── cga-cpcg-5.png
+└── cga-cpcg-6.png
+credit-gyems-academy/
+├── manifest.json
+└── vite.svg
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+├── credit-guide.jpg
+├── credit-gyems_369-logo.PNG
+└── dortae-freeman.jpg
+└── react.svg
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+├── Avatar.jsx
+├── Button.jsx
+├── Card.jsx
+├── ErrorDisplay.jsx
+├── Input.jsx
+├── Loader.jsx
+├── LoadingSpinner.jsx
+├── Modal.jsx
+└── Pagination.jsx
+credit-gyems-academy/
+credit-gyems-academy/
+├── CheckoutForm.jsx
+├── ContactForm.jsx
+├── LeadCaptureForm.jsx
+└── NewsletterForm.jsx
+credit-gyems-academy/
+credit-gyems-academy/
+├── DashboardLayout.jsx
+├── Footer.jsx
+├── MobileMenu.jsx
+├── Navbar.jsx
+└── Sidebar.jsx
+credit-gyems-academy/
+credit-gyems-academy/
+credit-gyems-academy/
+├── ProtectedRoute.jsx
+└── ScrollToTop.jsx
+credit-gyems-academy/
+├── firebase.js
+└── routeConfig.js
+credit-gyems-academy/
+├── AuthContext.jsx
+├── CartContext.jsx
+└── useCart.js
+credit-gyems-academy/
+credit-gyems-academy/
+├── AccountLayout.jsx
+├── AuthLayout.jsx
+├── DashboardLayout.jsx
+└── MainLayout.jsx
+credit-gyems-academy/
+credit-gyems-academy/
+├── BookingsPage.jsx
+├── CommunityPage.jsx
+├── DashboardPage.jsx
+├── DownloadsPage.jsx
+├── OrderDetailPage.jsx
+├── OrdersPage.jsx
+└── ProfilePage.jsx
+credit-gyems-academy/
+└── DashboardHomePage.jsx
+credit-gyems-academy/
+├── PrivacyPolicyPage.jsx
+└── TermsOfServicePage.jsx
+credit-gyems-academy/
+├── CreditCoachingPage.jsx
+├── CreditRepairPage.jsx
+└── FinancialPlanningPage.jsx
+credit-gyems-academy/
+├── cart.js
+├── order.js
+└── product.js
+├── AboutPage.jsx
+├── AccountPage.jsx
+├── BlogPage.jsx
+├── BlogPostPage.jsx
+├── BookingConfirmationPage.jsx
+├── BookingPage.jsx
+├── CartPage.jsx
+├── CheckoutPage.jsx
+├── ContactPage.jsx
+├── DisclaimerPage.jsx
+├── DiscussionFormPage.jsx
+├── DiscussionListPage.jsx
+├── DiscussionPage.jsx
+├── ForgotPasswordPage.jsx
+├── Homepage.jsx
+├── LoginPage.jsx
+├── MyBookingsPage.jsx
+├── MyOrdersPage.jsx
+├── NewDiscussionPage.jsx
+├── NotFoundPage.jsx
+├── OrderConfirmationPage.jsx
+├── ProductDetailPage.jsx
+├── ProductsPage.jsx
+├── RegisterPage.jsx
+├── ResetPasswordPage.jsx
+└── ServicesPage.jsx
+credit-gyems-academy/
+├── api.js
+├── auth.service.js
+├── dashboard.js
+├── order.js
+├── payments.js
+└── product.js
+credit-gyems-academy/
+credit-gyems-academy/
+└── api.js
+├── App.css
+├── App.jsx
+├── Breadcrumbs.jsx
+├── firebase.js
+├── index.css
+├── main.jsx
+└── test-firebase.js
+├── .env
+├── .env.development
+├── .env.production
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── jsconfig.json
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── README.md
+├── tailwind.config.js
+└── vite.config.js
+credit-gyems-academy/
+credit-gyems-academy/
+└── test-environments.json
+credit-gyems-academy/
+credit-gyems-academy/
+├── Cleanup-TestData.ps1
+├── Generate-TestReport.ps1
+├── Run-APITests.ps1
+├── Setup-TestData.ps1
+├── Test-Authentication.ps1
+├── Test-Booking.ps1
+├── Test-Community.ps1
+├── test-config.json
+├── Test-Ecommerce.ps1
+├── Test-Environment.ps1
+├── Test-ErrorScenarios.ps1
+├── Test-Integrations.ps1
+├── Test-LeadCapture.ps1
+└── Test-Utilities.ps1
+credit-gyems-academy/
+├── Achieve-100Percent-PassRate.ps1
+├── Apply-AllFixes-Now.ps1
+├── Apply-AllFixes.ps1
+├── Apply-QuickFixes.ps1
+├── Check-FixStatus.ps1
+├── Count-Tests.ps1
+├── Debug-CommunityTest.ps1
+├── Debug-NewsletterIssue.ps1
+├── Debug-QAIssues.ps1
+├── Deep-Diagnose-OrderTest.ps1
+├── Diagnose-AuthenticationIssues.ps1
+├── Diagnose-AuthTimingIssue.ps1
+├── Diagnose-OrderTest.ps1
+├── Diagnose-ProductIssue.ps1
+├── Direct-Fix-OrderTest.ps1
+├── Ensure-100Percent.ps1
+├── Fix-AllAuthenticationIssues.ps1
+├── Fix-AllCommunityIssues.ps1
+├── Fix-AllQAIssues.ps1
+├── Fix-AllTestIssues.ps1
+├── Fix-AllValidationIssues.ps1
+├── Fix-AuthenticationIssues.ps1
+├── Fix-AuthenticationTIming.ps1
+├── Fix-CommunityTestOnly.ps1
+├── Fix-Final-Warnings.ps1
+├── Fix-FinalTestIssues.ps1
+├── Fix-FrontendImports.ps1
+├── Fix-LeadControllerSyntax.ps1
+├── Fix-NewsletterSource.ps1
+├── Fix-OrderTest.ps1
+├── Fix-ProductConnectionIssues.ps1
+├── Fix-ProductCreation-Final.ps1
+├── Fix-ProductDuplicates.ps1
+├── Fix-QA-TestIssues.ps1
+├── Fix-RemainingQAIssues.ps1
+├── Fix-RemainingTestIssues.ps1
+├── Fix-Routes-Index.ps1
+├── Fix-Routes-Now.ps1
+├── Fix-ServerStability.ps1
+├── Fix-SlugDuplicateIssue.ps1
+├── Fix-TestCoverageAndAuth.ps1
+├── Fix-TestEnvironmentHealthCheck.ps1
+├── Fix-TestScriptErrors.ps1
+├── Fix-TimeWaitWarning.ps1
+├── Fix-ValidationErrors.ps1
+├── Fix-VerifyScript.ps1
+├── Monitor-BackendServer.ps1
+├── Monitor-ServerHealth.ps1
+├── Pre-Test-HealthCheck.ps1
+├── product-model-template.js
+├── Quick-Fix-AuthAndProducts.ps1
+├── Quick-FixLeadController.ps1
+├── Restart-Backend.ps1
+├── Restructure-CreditGyems.ps1
+├── Run-FinalFixes.ps1
+├── Run-QA-Now.ps1
+├── Run-SimpleAuthTest.ps1
+├── Setup-TestDataWithAdmin.ps1
+├── Simple-Fix-Script.ps1
+├── Simple-ProductFix.ps1
+├── Start-Backend-Robust.ps1
+├── test-admin-credentials.json
+├── Test-AuthenticationFlow.ps1
+├── Test-AuthQuick.ps1
+├── Test-CGA-.ps1
+├── Test-CommunityFlow.ps1
+├── Test-Environment.ps1
+├── Test-FailingComponents.ps1
+├── Test-FixAuthentication.ps1
+├── Update-VerifyScript.ps1
+├── Validate-ServerFixes.ps1
+├── Verify-100Percent.ps1
+├── Verify-AndRunTests.ps1
+├── Verify-CommunityFixes.ps1
+├── Verify-CreditGyemsRoutes.ps1
+├── Verify-Final-100Percent.ps1
+├── Verify-FixesQuick.ps1
+├── Verify-NowAt100Percent.ps1
+├── Verify-QAFixes.ps1
+├── Verify-RoutesFix.ps1
+└── Verify-TestCount.ps1
+credit-gyems-academy/
+├── Run-EdgeCaseTests.ps1
+├── Test-AdditionalEdgeCases.ps1
+├── Test-ConcurrentUsers.ps1
+├── Test-DataIntegrity.ps1
+├── Test-PaymentEdgeCases.ps1
+└── Test-SecurityEdgeCases.ps1
+credit-gyems-academy/
+credit-gyems-academy/
+└── playwright-helpers.js
+├── accessibility.spec.js
+├── component-testing.spec.js
+├── form-validation.spec.js
+├── navigation.spec.js
+├── performance.spec.js
+├── playwright.config.js
+├── responsive-design.spec.js
+├── Run-GUITests.ps1
+├── user-flows.spec.js
+└── visual-regression.spec.js
+credit-gyems-academy/
+├── fixMongoConnection.js
+├── fixMongoWriteOperations.js
+├── quickTestFix.js
+├── setupFirebaseAuth.js
+├── testData.js
+├── testDigitalProductsEnhanced.js
+└── testProductsWorking.js
+credit-gyems-academy/
+├── load-test.js
+├── Run-StressTests.ps1
+├── spike-test.js
+└── stress-test.js
+credit-gyems-academy/
+├── Run-AllTests.ps1
+└── Test-Config.ps1
+credit-gyems-academy/
+├── mock-api-server.js
+└── mock-data-generator.js
+credit-gyems-academy/
+credit-gyems-academy/
+└── mock-responses.json
+credit-gyems-academy/
+└── test-products.json
+credit-gyems-academy/
+└── test-users.json
+└── test-data-config.json
+credit-gyems-academy/
+├── qa-test-report-20250530-143335.html
+├── qa-test-report-20250530-143620.html
+├── qa-test-report-20250530-144028.html
+├── qa-test-report-20250530-144123.html
+├── qa-test-report-20250530-151316.html
+├── qa-test-report-20250530-152424.html
+├── qa-test-report-20250530-160326.html
+├── qa-test-report-20250530-195808.html
+├── qa-test-report-20250602-114742.html
+├── qa-test-report-20250602-115824.html
+├── qa-test-report-20250602-122623.html
+├── qa-test-report-20250602-123318.html
+├── qa-test-report-20250602-130801.html
+├── qa-test-report-20250602-132725.html
+├── qa-test-report-20250602-165819.html
+├── qa-test-report-20250602-171342.html
+├── qa-test-report-20250603-115858.html
+├── qa-test-report-20250603-123034.html
+├── qa-test-report-20250603-131303.html
+├── qa-test-report-20250603-134746.html
+├── qa-test-report-20250603-150152.html
+├── qa-test-report-20250603-151223.html
+├── qa-test-report-20250603-162123.html
+├── qa-test-report-20250603-173458.html
+├── qa-test-report-20250603-174927.html
+├── qa-test-report-20250603-182643.html
+├── qa-test-report-20250603-183838.html
+├── qa-test-report-20250603-185536.html
+├── qa-test-report-20250603-192029.html
+├── qa-test-report-20250603-211224.html
+├── qa-test-report-20250603-213517.html
+├── qa-test-report-20250603-220735.html
+├── qa-test-report-20250603-222623.html
+├── qa-test-report-20250603-235537.html
+├── qa-test-report-20250604-000146.html
+├── qa-test-report-20250604-001340.html
+├── qa-test-report-20250604-002257.html
+├── qa-test-report-20250604-002859.html
+├── TEST QUICK REFERENCE - Testing Commands Cheat Sheet.pdf
+└── TESTING GUIDE - Comprehensive Testing Documentation.pdf
+└── README.md
+├── .env
+├── .firebaserc
+├── .gitignore
+├── cors.json
+├── credit-gyems-project-structure.txt
+├── Export-FrontendStructure.ps1
+├── extract-project-structure.ps1
+├── firebase.json
+├── package-lock.json
+├── package.json
+└── storage.rules

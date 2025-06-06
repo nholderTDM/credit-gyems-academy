@@ -1,0 +1,374 @@
+{
+    "environments": {
+      "local": {
+        "name": "Local Development",
+        "description": "Local development environment for testing",
+        "urls": {
+          "backend": "http://localhost:5000",
+          "frontend": "http://localhost:3000",
+          "mockServer": "http://localhost:5001"
+        },
+        "database": {
+          "uri": "mongodb://localhost:27017/creditgyems_test",
+          "options": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true,
+            "serverSelectionTimeoutMS": 5000
+          }
+        },
+        "services": {
+          "stripe": {
+            "publicKey": "pk_test_51234567890abcdefghijklmnop",
+            "secretKey": "sk_test_51234567890abcdefghijklmnop",
+            "webhookSecret": "whsec_test_1234567890",
+            "apiVersion": "2023-10-16"
+          },
+          "sendgrid": {
+            "apiKey": "SG.test_key_1234567890",
+            "fromEmail": "test@creditgyemsacademy.local",
+            "templates": {
+              "welcome": "d-test-welcome",
+              "passwordReset": "d-test-reset",
+              "orderConfirmation": "d-test-order",
+              "bookingConfirmation": "d-test-booking"
+            }
+          },
+          "firebase": {
+            "apiKey": "test-firebase-api-key",
+            "authDomain": "creditgyems-test.firebaseapp.com",
+            "projectId": "creditgyems-test",
+            "storageBucket": "creditgyems-test.appspot.com",
+            "messagingSenderId": "123456789",
+            "appId": "1:123456789:web:abcdef123456"
+          },
+          "twilio": {
+            "accountSid": "ACtest1234567890",
+            "authToken": "test_auth_token",
+            "phoneNumber": "+15551234567"
+          }
+        },
+        "features": {
+          "emailNotifications": true,
+          "smsNotifications": false,
+          "twoFactorAuth": true,
+          "maintenanceMode": false,
+          "debugMode": true,
+          "mockPayments": true,
+          "rateLimiting": false
+        },
+        "testing": {
+          "seedDatabase": true,
+          "clearDataAfterTests": true,
+          "enableMockServer": true,
+          "parallelTests": false,
+          "verboseLogging": true
+        },
+        "timeouts": {
+          "api": 30000,
+          "page": 30000,
+          "script": 300000
+        }
+      },
+      "staging": {
+        "name": "Staging Environment",
+        "description": "Staging environment for pre-production testing",
+        "urls": {
+          "backend": "https://api-staging.creditgyemsacademy.com",
+          "frontend": "https://staging.creditgyemsacademy.com",
+          "mockServer": null
+        },
+        "database": {
+          "uri": "${STAGING_MONGODB_URI}",
+          "options": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true,
+            "ssl": true,
+            "authSource": "admin"
+          }
+        },
+        "services": {
+          "stripe": {
+            "publicKey": "${STAGING_STRIPE_PUBLIC_KEY}",
+            "secretKey": "${STAGING_STRIPE_SECRET_KEY}",
+            "webhookSecret": "${STAGING_STRIPE_WEBHOOK_SECRET}",
+            "apiVersion": "2023-10-16"
+          },
+          "sendgrid": {
+            "apiKey": "${STAGING_SENDGRID_API_KEY}",
+            "fromEmail": "noreply@staging.creditgyemsacademy.com",
+            "templates": {
+              "welcome": "d-staging-welcome",
+              "passwordReset": "d-staging-reset",
+              "orderConfirmation": "d-staging-order",
+              "bookingConfirmation": "d-staging-booking"
+            }
+          },
+          "firebase": {
+            "apiKey": "${STAGING_FIREBASE_API_KEY}",
+            "authDomain": "creditgyems-staging.firebaseapp.com",
+            "projectId": "creditgyems-staging",
+            "storageBucket": "creditgyems-staging.appspot.com",
+            "messagingSenderId": "${STAGING_FIREBASE_SENDER_ID}",
+            "appId": "${STAGING_FIREBASE_APP_ID}"
+          }
+        },
+        "features": {
+          "emailNotifications": true,
+          "smsNotifications": true,
+          "twoFactorAuth": true,
+          "maintenanceMode": false,
+          "debugMode": false,
+          "mockPayments": false,
+          "rateLimiting": true
+        },
+        "testing": {
+          "seedDatabase": false,
+          "clearDataAfterTests": false,
+          "enableMockServer": false,
+          "parallelTests": true,
+          "verboseLogging": false
+        },
+        "timeouts": {
+          "api": 60000,
+          "page": 60000,
+          "script": 600000
+        }
+      },
+      "production": {
+        "name": "Production Environment",
+        "description": "Live production environment - handle with care",
+        "urls": {
+          "backend": "https://api.creditgyemsacademy.com",
+          "frontend": "https://creditgyemsacademy.com",
+          "mockServer": null
+        },
+        "database": {
+          "uri": "${PROD_MONGODB_URI}",
+          "options": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true,
+            "ssl": true,
+            "authSource": "admin",
+            "replicaSet": "rs0"
+          }
+        },
+        "services": {
+          "stripe": {
+            "publicKey": "${PROD_STRIPE_PUBLIC_KEY}",
+            "secretKey": "${PROD_STRIPE_SECRET_KEY}",
+            "webhookSecret": "${PROD_STRIPE_WEBHOOK_SECRET}",
+            "apiVersion": "2023-10-16"
+          },
+          "sendgrid": {
+            "apiKey": "${PROD_SENDGRID_API_KEY}",
+            "fromEmail": "support@creditgyemsacademy.com",
+            "templates": {
+              "welcome": "d-prod-welcome",
+              "passwordReset": "d-prod-reset",
+              "orderConfirmation": "d-prod-order",
+              "bookingConfirmation": "d-prod-booking"
+            }
+          },
+          "firebase": {
+            "apiKey": "${PROD_FIREBASE_API_KEY}",
+            "authDomain": "creditgyemsacademy.firebaseapp.com",
+            "projectId": "creditgyems-prod",
+            "storageBucket": "creditgyems-prod.appspot.com",
+            "messagingSenderId": "${PROD_FIREBASE_SENDER_ID}",
+            "appId": "${PROD_FIREBASE_APP_ID}"
+          }
+        },
+        "features": {
+          "emailNotifications": true,
+          "smsNotifications": true,
+          "twoFactorAuth": true,
+          "maintenanceMode": false,
+          "debugMode": false,
+          "mockPayments": false,
+          "rateLimiting": true
+        },
+        "testing": {
+          "seedDatabase": false,
+          "clearDataAfterTests": false,
+          "enableMockServer": false,
+          "parallelTests": false,
+          "verboseLogging": false,
+          "readOnlyMode": true
+        },
+        "timeouts": {
+          "api": 90000,
+          "page": 90000,
+          "script": 900000
+        }
+      },
+      "ci": {
+        "name": "CI/CD Environment",
+        "description": "Continuous Integration environment for automated testing",
+        "urls": {
+          "backend": "${CI_BACKEND_URL}",
+          "frontend": "${CI_FRONTEND_URL}",
+          "mockServer": "http://localhost:5001"
+        },
+        "database": {
+          "uri": "${CI_MONGODB_URI}",
+          "options": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true,
+            "serverSelectionTimeoutMS": 5000
+          }
+        },
+        "services": {
+          "stripe": {
+            "publicKey": "pk_test_ci_1234567890",
+            "secretKey": "sk_test_ci_1234567890",
+            "webhookSecret": "whsec_test_ci_1234567890",
+            "apiVersion": "2023-10-16"
+          },
+          "sendgrid": {
+            "apiKey": "SG.ci_test_key",
+            "fromEmail": "ci@creditgyemsacademy.test",
+            "sandboxMode": true
+          },
+          "firebase": {
+            "useEmulator": true,
+            "emulatorHost": "localhost:9099"
+          }
+        },
+        "features": {
+          "emailNotifications": false,
+          "smsNotifications": false,
+          "twoFactorAuth": false,
+          "maintenanceMode": false,
+          "debugMode": false,
+          "mockPayments": true,
+          "rateLimiting": false
+        },
+        "testing": {
+          "seedDatabase": true,
+          "clearDataAfterTests": true,
+          "enableMockServer": true,
+          "parallelTests": true,
+          "verboseLogging": false,
+          "failFast": true
+        },
+        "timeouts": {
+          "api": 10000,
+          "page": 20000,
+          "script": 180000
+        }
+      },
+      "performance": {
+        "name": "Performance Testing Environment",
+        "description": "Dedicated environment for load and stress testing",
+        "urls": {
+          "backend": "https://perf-api.creditgyemsacademy.com",
+          "frontend": "https://perf.creditgyemsacademy.com",
+          "mockServer": null
+        },
+        "database": {
+          "uri": "${PERF_MONGODB_URI}",
+          "options": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true,
+            "poolSize": 100,
+            "serverSelectionTimeoutMS": 10000
+          }
+        },
+        "services": {
+          "stripe": {
+            "publicKey": "pk_test_perf_1234567890",
+            "secretKey": "sk_test_perf_1234567890",
+            "webhookSecret": "whsec_test_perf_1234567890",
+            "apiVersion": "2023-10-16",
+            "maxRetries": 1
+          }
+        },
+        "features": {
+          "emailNotifications": false,
+          "smsNotifications": false,
+          "twoFactorAuth": false,
+          "maintenanceMode": false,
+          "debugMode": false,
+          "mockPayments": true,
+          "rateLimiting": false,
+          "caching": false
+        },
+        "testing": {
+          "seedDatabase": true,
+          "clearDataAfterTests": true,
+          "enableMockServer": false,
+          "parallelTests": false,
+          "verboseLogging": false,
+          "performanceMode": true
+        },
+        "timeouts": {
+          "api": 120000,
+          "page": 120000,
+          "script": 3600000
+        },
+        "k6": {
+          "stages": {
+            "warmup": { "duration": "2m", "target": 10 },
+            "load": { "duration": "5m", "target": 100 },
+            "spike": { "duration": "1m", "target": 500 },
+            "recovery": { "duration": "2m", "target": 10 }
+          },
+          "thresholds": {
+            "http_req_duration": ["p(95)<3000", "p(99)<5000"],
+            "http_req_failed": ["rate<0.1"],
+            "http_reqs": ["rate>100"]
+          }
+        }
+      }
+    },
+    "shared": {
+      "testUsers": {
+        "standard": {
+          "email": "test@example.com",
+          "password": "Test123!"
+        },
+        "admin": {
+          "email": "admin@example.com",
+          "password": "Admin123!"
+        },
+        "premium": {
+          "email": "premium@example.com",
+          "password": "Premium123!"
+        }
+      },
+      "testCards": {
+        "success": "4242424242424242",
+        "decline": "4000000000000002",
+        "insufficientFunds": "4000000000009995",
+        "expired": "4000000000000069",
+        "processingError": "4000000000000119",
+        "threeDSecure": "4000000000003220"
+      },
+      "apiVersions": {
+        "v1": "/api/v1",
+        "v2": "/api/v2",
+        "current": "/api"
+      },
+      "retryPolicy": {
+        "maxRetries": 3,
+        "retryDelay": 1000,
+        "retryMultiplier": 2,
+        "maxRetryDelay": 10000
+      },
+      "browserConfig": {
+        "headless": true,
+        "slowMo": 0,
+        "devtools": false,
+        "defaultViewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "userAgent": "CreditGyemsAcademy-TestBot/1.0"
+      }
+    },
+    "scripts": {
+      "selectEnvironment": "node QA/scripts/helpers/select-environment.js",
+      "validateConfig": "node QA/scripts/helpers/validate-config.js",
+      "exportEnv": "node QA/scripts/helpers/export-env.js"
+    }
+  }

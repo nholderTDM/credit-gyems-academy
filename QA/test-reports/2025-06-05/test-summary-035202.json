@@ -1,0 +1,17 @@
+{
+  "TestMode": "Quick",
+  "Results": {
+    "API Tests (Quick)": {
+      "Error": "Item has already been added. Key in dictionary: 'Message'  Key being added: 'Message'",
+      "Success": false
+    }
+  },
+  "Summary": {
+    "TotalSkipped": 0,
+    "TotalFailed": 1,
+    "TotalPassed": 0,
+    "Duration": "00:00:17"
+  },
+  "StartTime": "2025-06-05T03:51:44.5782191-04:00",
+  "Environment": "local"
+}

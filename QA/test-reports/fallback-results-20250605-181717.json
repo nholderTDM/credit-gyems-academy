@@ -1,0 +1,26 @@
+{
+  "Passed": 5,
+  "Failed": 0,
+  "Tests": [
+    {
+      "Result": "Passed",
+      "Name": "Health Check"
+    },
+    {
+      "Result": "Passed",
+      "Name": "User Registration"
+    },
+    {
+      "Result": "Passed",
+      "Name": "Get Profile"
+    },
+    {
+      "Result": "Passed",
+      "Name": "List Products"
+    },
+    {
+      "Result": "Passed",
+      "Name": "List Services"
+    }
+  ]
+}

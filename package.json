@@ -1,8 +1,14 @@
 {
   "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "@playwright/test": "^1.52.0",
     "autoprefixer": "^10.4.21",
+    "axe-playwright": "^2.1.0",
+    "bcryptjs": "^3.0.2",
+    "playwright": "^1.52.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.7"
+    "tailwindcss": "^4.1.7",
+    "uuid": "^11.1.0"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.3",
@@ -10,7 +16,6 @@
     "@sendgrid/mail": "^8.1.5",
     "@vitejs/plugin-react": "^4.5.0",
     "axios": "^1.9.0",
-    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -23,6 +28,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
     "multer": "^2.0.0",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.17.1",
     "react": "^19.1.0",
     "react-datepicker": "^8.3.0",
     "react-dom": "^19.1.0",
@@ -38,7 +45,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:products": "node scripts/testDigitalProductsEnhanced.js",
+    "test:products:cleanup": "node scripts/testDigitalProductsEnhanced.js --cleanup"
   },
   "keywords": [],
   "author": "",

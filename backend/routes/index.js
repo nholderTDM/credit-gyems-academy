@@ -1,104 +1,38 @@
 const express = require('express');
 const router = express.Router();
 
-console.log('📍 Loading routes systematically...');
+// Import all route modules
+const authRoutes = require('./authRoutes');
+const productRoutes = require('./productRoutes');
+const serviceRoutes = require('./serviceRoutes');
+const bookingRoutes = require('./bookingRoutes');
+const orderRoutes = require('./orderRoutes');
+const communityRoutes = require('./communityRoutes');
+const leadRoutes = require('./leadRoutes');
+const contactRoutes = require('./contactRoutes');
+const cartRoutes = require('./cartRoutes');
 
-// Health check route (always works)
-router.get('/health', (req, res) => {
-    console.log('✅ Health check accessed');
-    res.status(200).json({ 
-      status: 'ok', 
-      message: 'Credit Gyems Academy API is running',
-      timestamp: new Date().toISOString()
-    });
-});
+// Register all routes
+router.use('/auth', authRoutes);
+router.use('/products', productRoutes);
+router.use('/services', serviceRoutes);
+router.use('/bookings', bookingRoutes);
+router.use('/orders', orderRoutes);
+router.use('/community', communityRoutes);
+router.use('/leads', leadRoutes);
+router.use('/contact', contactRoutes);
+router.use('/cart', cartRoutes);
 
-// API info route
-router.get('/', (req, res) => {
-    console.log('✅ Root API route accessed');
-    res.status(200).json({
-      success: true,
-      message: 'Welcome to Credit Gyems Academy API',
-      version: '1.0.0',
-      endpoints: {
-        leads: '/api/leads',
-        health: '/api/health'
-      }
-    });
-});
-
-// Load leadRoutes (should work)
-try {
-    console.log('📍 Attempting to load leadRoutes...');
-    const leadRoutes = require('./leadRoutes');
-    router.use('/leads', leadRoutes);
-    console.log('✅ leadRoutes loaded successfully');
-} catch (error) {
-    console.error('❌ Error loading leadRoutes:', error.message);
-}
-
-// Uncomment ONE BY ONE to test each route file after leadRoutes works:
-
-// STEP 1: Test authRoutes first (after fixing the import)
-/*
-try {
-    console.log('📍 Attempting to load authRoutes...');
-    const authRoutes = require('./authRoutes');
-    router.use('/auth', authRoutes);
-    console.log('✅ authRoutes loaded successfully');
-} catch (error) {
-    console.error('❌ Error loading authRoutes:', error.message);
-}
-*/
-
-// STEP 2: Test productRoutes
-/*
-try {
-    console.log('📍 Attempting to load productRoutes...');
-    const productRoutes = require('./productRoutes');
-    router.use('/products', productRoutes);
-    console.log('✅ productRoutes loaded successfully');
-} catch (error) {
-    console.error('❌ Error loading productRoutes:', error.message);
-}
-*/
-
-// STEP 3: Test orderRoutes
-/*
-try {
-    console.log('📍 Attempting to load orderRoutes...');
-    const orderRoutes = require('./orderRoutes');
-    router.use('/orders', orderRoutes);
-    console.log('✅ orderRoutes loaded successfully');
-} catch (error) {
-    console.error('❌ Error loading orderRoutes:', error.message);
-}
-*/
-
-// STEP 4: Test bookingRoutes
-/*
-try {
-    console.log('📍 Attempting to load bookingRoutes...');
-    const bookingRoutes = require('./bookingRoutes');
-    router.use('/bookings', bookingRoutes);
-    console.log('✅ bookingRoutes loaded successfully');
-} catch (error) {
-    console.error('❌ Error loading bookingRoutes:', error.message);
-}
-*/
-
-// STEP 5: Test uploadRoutes
-/*
-try {
-    console.log('📍 Attempting to load uploadRoutes...');
-    const uploadRoutes = require('./uploadRoutes');
-    router.use('/uploads', uploadRoutes);
-    console.log('✅ uploadRoutes loaded successfully');
-} catch (error) {
-    console.error('❌ Error loading uploadRoutes:', error.message);
-}
-*/
-
-console.log('📍 Routes setup complete');
+// Debug: Show registered routes
+console.log('📍 Routes registered:');
+console.log('  - /api/auth');
+console.log('  - /api/products');
+console.log('  - /api/services');
+console.log('  - /api/bookings');
+console.log('  - /api/orders');
+console.log('  - /api/community');
+console.log('  - /api/leads');
+console.log('  - /api/contact');
+console.log('  - /api/cart');
 
 module.exports = router;

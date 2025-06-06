@@ -1,0 +1,17 @@
+{
+  "StartTime": "2025-06-05T22:51:57.3579854-04:00",
+  "Summary": {
+    "TotalSkipped": 0,
+    "TotalPassed": 0,
+    "Duration": "00:04:22",
+    "TotalFailed": 1
+  },
+  "Results": {
+    "API Tests (Quick)": {
+      "Error": "Cannot find an overload for \"op_Subtraction\" and the argument count: \"2\".",
+      "Success": false
+    }
+  },
+  "Environment": "local",
+  "TestMode": "Quick"
+}

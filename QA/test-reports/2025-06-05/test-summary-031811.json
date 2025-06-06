@@ -1,0 +1,17 @@
+{
+  "Environment": "local",
+  "Summary": {
+    "Duration": "00:00:37",
+    "TotalSkipped": 0,
+    "TotalFailed": 1,
+    "TotalPassed": 0
+  },
+  "Results": {
+    "API Tests (Quick)": {
+      "Error": "Test runner script not found: ",
+      "Success": false
+    }
+  },
+  "StartTime": "2025-06-05T03:17:34.3024753-04:00",
+  "TestMode": "Quick"
+}

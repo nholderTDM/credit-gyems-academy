@@ -1,0 +1,17 @@
+{
+  "Summary": {
+    "TotalFailed": 1,
+    "Duration": "00:00:13",
+    "TotalPassed": 0,
+    "TotalSkipped": 0
+  },
+  "StartTime": "2025-06-05T15:29:03.9820003-04:00",
+  "Environment": "local",
+  "TestMode": "Quick",
+  "Results": {
+    "API Tests (Quick)": {
+      "Success": false,
+      "Error": "At D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:30 char:10\r\n+         }\r\n+          ~\r\nMissing ')' in method call.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:46 char:10\r\n+         }\r\n+          ~\r\nMissing ')' in method call.\r\n\r\nAt D:\\credit-gyems-academy\\QA\\scripts\\api-tests\\Test-Utilities.ps1:58 char:10\r\n+         }\r\n+          ~\r\nMissing ')' in method call."
+    }
+  }
+}

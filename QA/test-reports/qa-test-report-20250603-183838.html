@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Credit Gyems Academy - QA Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #FFD700; text-align: center; }
+        h2 { color: #333; border-bottom: 2px solid #FFD700; padding-bottom: 10px; }
+        h3 { color: #666; }
+        .summary { display: flex; justify-content: space-around; margin: 20px 0; }
+        .stat-box { text-align: center; padding: 20px; border-radius: 8px; flex: 1; margin: 0 10px; }
+        .stat-box.passed { background: #d4edda; color: #155724; }
+        .stat-box.failed { background: #f8d7da; color: #721c24; }
+        .stat-box.warnings { background: #fff3cd; color: #856404; }
+        .stat-box.info { background: #d1ecf1; color: #0c5460; }
+        .stat-number { font-size: 36px; font-weight: bold; }
+        .stat-label { font-size: 14px; margin-top: 5px; }
+        .section { margin: 20px 0; }
+        .test-item { padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .test-item.success { background: #f0f9ff; border-left: 4px solid #28a745; }
+        .test-item.failure { background: #fff5f5; border-left: 4px solid #dc3545; }
+        .test-item.warning { background: #fffbf0; border-left: 4px solid #ffc107; }
+        .error-detail { color: #dc3545; font-size: 12px; margin-top: 5px; font-family: monospace; }
+        .timestamp { color: #999; font-size: 12px; }
+        .action-items { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .action-items h3 { margin-top: 0; }
+        .action-items ul { margin: 10px 0; }
+        .category-section { margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+        .fix-suggestion { background: #e7f3ff; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .chart { margin: 20px 0; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Credit Gyems Academy - QA Test Report</h1>
+        <p style="text-align: center; color: #666;">Generated: 2025-06-03 18:38:38</p>
+        
+        <div class="summary">
+            <div class="stat-box passed">
+                <div class="stat-number">43</div>
+                <div class="stat-label">Tests Passed</div>
+            </div>
+            <div class="stat-box failed">
+                <div class="stat-number">86</div>
+                <div class="stat-label">Tests Failed</div>
+            </div>
+            <div class="stat-box warnings">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Warnings</div>
+            </div>
+            <div class="stat-box info">
+                <div class="stat-number">30.94%</div>
+                <div class="stat-label">Pass Rate</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Test Execution Summary</h2>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Total Tests Executed</td>
+                    <td>139</td>
+                </tr>
+                <tr>
+                    <td>Execution Time</td>
+                    <td>00:00:25</td>
+                </tr>
+                <tr>
+                    <td>Test Environment</td>
+                    <td>Local Development (Frontend: 3000, Backend: 5000)</td>
+                </tr>
+                <tr>
+                    <td>Project Root</td>
+                    <td>D:\credit-gyems-academy</td>
+                </tr>
+                <tr>
+                    <td>Test Data Created</td>
+                    <td>Users: 0, Products: 0, Services: 0</td>
+                </tr>
+            </table>
+        </div>        <div class="section">
+            <h2>Failure Analysis</h2>            <div class="category-section">
+                <h3>Authentication Issues (27)</h3>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:22</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:23</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:23</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 401)</strong>
+                    <div class="timestamp">18:38:24</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 401)</strong>
+                    <div class="timestamp">18:38:25</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/auth/profile - Status: 404 (Expected: 401)</strong>
+                    <div class="timestamp">18:38:26</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/auth/profile not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/forgot-password - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:26</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/forgot-password not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:28</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:29</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:30</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:30</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:32</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:34</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/auth/profile - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:35</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/auth/profile not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/auth/profile - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/auth/profile not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 401)</strong>
+                    <div class="timestamp">18:38:37</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/login - Status: 404 (Expected: 401)</strong>
+                    <div class="timestamp">18:38:37</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/login not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/auth/register - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:37</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/auth/register not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/auth/profile - Status: 404 (Expected: 401)</strong>
+                    <div class="timestamp">18:38:38</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/auth/profile not found"
+}</div></div></div>            <div class="category-section">
+                <h3>Booking Issues (5)</h3>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/bookings/available-slots?date=2025-06-04&serviceId= - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/bookings/available-slots?date=2025-06-04\u0026serviceId= not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/bookings/my-bookings - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/bookings/my-bookings not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/bookings/blackout-dates - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/bookings/blackout-dates not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/bookings - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/bookings not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/bookings/my-bookings - Status: 404 (Expected: 401)</strong>
+                    <div class="timestamp">18:38:38</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/bookings/my-bookings not found"
+}</div></div></div>            <div class="category-section">
+                <h3>Communications Issues (2)</h3>                <div class="test-item failure">
+                    <strong>Validation test failed: Missing email</strong>
+                    <div class="timestamp">18:38:28</div></div>                <div class="test-item failure">
+                    <strong>Validation test failed: Invalid email format</strong>
+                    <div class="timestamp">18:38:29</div></div></div>            <div class="category-section">
+                <h3>Community Issues (26)</h3>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/services/seed - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/services - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/services - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/community/discussions - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>Failed to create discussion: My Credit Score Journey - From 520 to 750!</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/community/discussions - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>Failed to create discussion: Best practices for disputing errors on credit reports?</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/community/discussions - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?category=general - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?category=credit_repair - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?category=credit_coaching - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?category=financial_planning - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?category=success_stories - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?sort=latest - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?sort=popular - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?page=1&limit=5 - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/community/discussions?search=credit - Status: 401 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Not authorized to access this route"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/leads - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/leads not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/leads/newsletter - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/leads/newsletter not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/leads/download-guide - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/leads/download-guide not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/leads - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/leads not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/leads - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/leads not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/leads - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/leads not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/leads - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/leads not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/contact - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:36</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/contact not found"
+}</div></div></div>            <div class="category-section">
+                <h3>Database Issues (1)</h3>                <div class="test-item failure">
+                    <strong>MongoDB connection failed - check MONGODB_URI in backend/.env</strong>
+                    <div class="timestamp">18:38:20</div></div></div>            <div class="category-section">
+                <h3>E-commerce Issues (11)</h3>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/products - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/products not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/products - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/products not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>Failed to create product: Credit Repair Mastery Guide</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/products - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/products not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>Failed to create product: Financial Freedom Blueprint</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>POST http://localhost:5000/api/products - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:20</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route POST /api/products not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>Failed to create product: Credit Coaching Masterclass</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/products/not-an-objectid - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:37</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/products/not-an-objectid not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/products/12345 - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:38</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/products/12345 not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/products/zzzzzzzzzzzzzzzzzzzzzzzz - Status: 404 (Expected: 400)</strong>
+                    <div class="timestamp">18:38:38</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/products/zzzzzzzzzzzzzzzzzzzzzzzz not found"
+}</div></div>                <div class="test-item failure">
+                    <strong>GET http://localhost:5000/api/products - Status: 404 (Expected: 200)</strong>
+                    <div class="timestamp">18:38:38</div>                    <div class="error-detail">Error: 
+{
+  "success": false,
+  "message": "Route GET /api/products not found"
+}</div></div></div>            <div class="category-section">
+                <h3>General Issues (14)</h3>                <div class="test-item failure">
+                    <strong>Failed to create test user: test_20250603183820_7550@creditgyemstest.com</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Failed to create test user: test_20250603183820_9003@creditgyemstest.com</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Failed to create test user: test_20250603183820_4872@creditgyemstest.com</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Failed to create test user: test_20250603183820_9067@creditgyemstest.com</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Failed to create test user: test_20250603183820_4119@creditgyemstest.com</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Failed to create test user: test_20250603183820_2754@creditgyemstest.com</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Failed to create service: Credit Repair Consultation</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Failed to create service: Financial Planning Session</strong>
+                    <div class="timestamp">18:38:20</div></div>                <div class="test-item failure">
+                    <strong>Validation test failed: Missing required fields</strong>
+                    <div class="timestamp">18:38:30</div></div>                <div class="test-item failure">
+                    <strong>Failed to create session 1</strong>
+                    <div class="timestamp">18:38:30</div></div>                <div class="test-item failure">
+                    <strong>Failed to create session 2</strong>
+                    <div class="timestamp">18:38:32</div></div>                <div class="test-item failure">
+                    <strong>Failed to create session 3</strong>
+                    <div class="timestamp">18:38:34</div></div>                <div class="test-item failure">
+                    <strong>Session 1 is invalid</strong>
+                    <div class="timestamp">18:38:35</div></div>                <div class="test-item failure">
+                    <strong>Session 0 is invalid</strong>
+                    <div class="timestamp">18:38:36</div></div></div></div>        <div class="action-items">
+            <h3>Recommended Action Items</h3>
+            <ul><li><strong>Authentication:</strong> Review Firebase configuration and ensure auth tokens are properly handled. Check JWT_SECRET in backend/.env</li><li><strong>E-commerce:</strong> Verify Stripe integration and product/order models in MongoDB. Ensure STRIPE_SECRET_KEY is valid</li><li><strong>Booking:</strong> Check Google Calendar API credentials and service availability settings</li><li><strong>Community:</strong> Ensure discussion and post models are properly indexed in MongoDB</li><li><strong>Communications:</strong> Verify SendGrid API key and email template configurations</li><li><strong>Database:</strong> Check MongoDB connection string and ensure database is accessible</li>            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Test Coverage Summary</h2>
+            <table>
+                <tr>
+                    <th>Feature Area</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>User Authentication</td>
+                    <td>⚠️ Issues Found</td>
+                    <td>Registration, login, profile management, password reset</td>
+                </tr>
+                <tr>
+                    <td>E-commerce</td>
+                    <td>⚠️ Issues Found</td>
+                    <td>Product browsing, cart, checkout, payment processing</td>
+                </tr>
+                <tr>
+                    <td>Booking System</td>
+                    <td>⚠️ Issues Found</td>
+                    <td>Service booking, calendar integration, availability</td>
+                </tr>
+                <tr>
+                    <td>Community Forum</td>
+                    <td>⚠️ Issues Found</td>
+                    <td>Discussions, posts, likes, moderation</td>
+                </tr>
+                <tr>
+                    <td>Lead Capture</td>
+                    <td>⚠️ Issues Found</td>
+                    <td>Lead forms, email delivery, analytics</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Next Steps</h2>
+            <ol>
+                <li>Address all failed tests starting with critical authentication and payment flows</li>
+                <li>Re-run failed tests after fixes are implemented</li>
+                <li>Set up continuous integration to run these tests automatically</li>
+                <li>Consider adding more edge case scenarios for robust testing</li>
+                <li>Document any manual testing requirements not covered by automation</li>
+            </ol>
+        </div>
+        
+        <div class="footer">
+            <p>Report generated by Credit Gyems Academy QA Test Suite v1.0</p>
+            <p>Script Location: D:\credit-gyems-academy\scripts\TS_CGA_v1</p>
+        </div>
+    </div>
+</body>
+</html>
